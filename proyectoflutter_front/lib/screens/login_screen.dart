@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'registro_screen.dart';
+import 'package:tu_app/config.dart'
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.4:8000/login'), // Cambiar IP si usás celular real
+        Uri.parse('$baseUrl/usuarios'), // Cambiar IP si usás celular real
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'correo': correo,
