@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'registro_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key}); // ← Constructor con Key
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -12,25 +14,46 @@ class _LoginScreenState extends State<LoginScreen> {
   final _userController = TextEditingController();
   final _passController = TextEditingController();
 
-  void _login() {
-    final user = _userController.text;
-    final pass = _passController.text;
+  Future<void> _login() async {
+    final correo = _userController.text.trim();
+    final contrasena = _passController.text;
 
-    if (user == 'admin' && pass == '1234') {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Login exitoso 🎉')));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Usuario o contraseña incorrectos ❌')),
-      );
+    if (correo.isEmpty || contrasena.isEmpty) {
+      _mostrarMensaje('Completá todos los campos 📝');
+      return;
     }
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://192.168.1.4:8000/login'), // Cambiar IP si usás celular real
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'correo': correo,
+          'contrasena': contrasena,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        _mostrarMensaje('¡Bienvenido, chamigo ${data['nombre']}! 🎉');
+      } else {
+        _mostrarMensaje('Login fallido: ${response.body} ❌');
+      }
+    } catch (e) {
+      _mostrarMensaje('Error de conexión: $e ⚠️');
+    }
+  }
+
+  void _mostrarMensaje(String mensaje) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(mensaje)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF5FDFE8),
+      backgroundColor: const Color(0xFFA1CDC4),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(24),
@@ -38,8 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              const BoxShadow(
+            boxShadow: const [
+              BoxShadow(
                 color: Colors.black26,
                 blurRadius: 10,
                 offset: Offset(0, 4),
@@ -60,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
               TextField(
                 controller: _userController,
-                decoration: const InputDecoration(labelText: 'Usuario'),
+                decoration: const InputDecoration(labelText: 'Correo'),
               ),
               TextField(
                 controller: _passController,

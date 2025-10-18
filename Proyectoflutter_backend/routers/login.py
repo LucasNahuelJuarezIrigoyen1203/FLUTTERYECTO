@@ -3,13 +3,8 @@ from pydantic import BaseModel, EmailStr
 from db import conn
 import bcrypt
 
-router = APIRouter()
-
-class LoginRequest(BaseModel):
-    correo: EmailStr
-    contraseña: str
-
 @router.post("/login")
+
 def login(datos: LoginRequest):
     cursor = conn.cursor()
     cursor.execute("SELECT id, nombre, correo, contraseña FROM usuarios WHERE correo = ?", datos.correo)
@@ -18,8 +13,8 @@ def login(datos: LoginRequest):
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-    contraseña_hash = usuario[3]
-    if not bcrypt.checkpw(datos.contraseña.encode('utf-8'), contraseña_hash.encode('utf-8')):
+    contrasena_hash = usuario[3]
+    if not bcrypt.checkpw(datos.contrasena.encode('utf-8'), contrasena_hash.encode('utf-8')):
         raise HTTPException(status_code=401, detail="Contraseña incorrecta")
 
     return {
