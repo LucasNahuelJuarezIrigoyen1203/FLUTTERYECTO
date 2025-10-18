@@ -3,8 +3,13 @@ from pydantic import BaseModel, EmailStr
 from db import conn
 import bcrypt
 
-@router.post("/login")
+router = APIRouter()
 
+class LoginRequest(BaseModel):
+    correo: EmailStr
+    contrasena: str
+
+@router.post("/login")
 def login(datos: LoginRequest):
     cursor = conn.cursor()
     cursor.execute("SELECT id, nombre, correo, contraseña FROM usuarios WHERE correo = ?", datos.correo)
