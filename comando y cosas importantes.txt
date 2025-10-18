@@ -1,0 +1,44 @@
+"comandio.txt"
+
+# 🚀 BACKEND FASTAPI
+
+# Activar entorno virtual (si usás venv)
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
+
+# Instalar dependencias (si no están)
+pip install fastapi uvicorn python-dotenv bcrypt pyodbc
+
+# Ejecutar el servidor FastAPI
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+
+# 🌐 FRONTEND FLUTTER WEB
+
+# Navegar al proyecto Flutter
+cd khroma_frontend  # o el nombre de tu carpeta
+
+# Instalar dependencias
+flutter pub get
+
+# Ejecutar en Chrome (Flutter Web)
+flutter run -d chrome
+
+# (Opcional) Ejecutar en dispositivo físico Android
+flutter devices  # para ver ID del dispositivo
+flutter run -d <ID_DEL_DISPOSITIVO>
+
+
+# 🧪 TESTEO Y DEBUG
+
+# Ver documentación interactiva del backend
+http://192.168.#.#:8000/docs
+cambien las # por su ip 
+
+# Ver consola de red en Flutter Web
+Chrome → F12 → pestaña "Network" → buscar /login o /usuarios
+
+# Limpiar y reconstruir Flutter
+flutter clean
+flutter pub get
+flutter run -d chrome
