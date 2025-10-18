@@ -12,18 +12,27 @@ def listar_usuarios():
     rows = cursor.fetchall()
     return [Usuario(id=r[0], nombre=r[1], correo=r[2]) for r in rows]
 
-@router.post("/usuarios", response_model=Usuario)
+@router.post("/usuarios")
 def crear_usuario(usuario: UsuarioCreate):
     cursor = conn.cursor()
-    hashed = bcrypt.hashpw(usuario.contraseña.encode('utf-8'), bcrypt.gensalt())
+    hashed = bcrypt.hashpw(usuario.contrasena.encode('utf-8'), bcrypt.gensalt())
     try:
         cursor.execute(
             "INSERT INTO usuarios (nombre, correo, contraseña) VALUES (?, ?, ?)",
-            usuario.nombre, usuario.correo, hashed.decode('utf-8')
+            (usuario.nombre, usuario.correo, hashed.decode('utf-8'))
         )
         conn.commit()
         cursor.execute("SELECT TOP 1 id, nombre, correo FROM usuarios ORDER BY id DESC")
         r = cursor.fetchone()
-        return Usuario(id=r[0], nombre=r[1], correo=r[2])
+        return {
+            "usuario": {
+                "id": r[0],
+                "nombre": r[1],
+                "correo": r[2]
+            },
+            "mensaje": "Registro exitoso"
+        }
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=f"Error al registrar: {str(e)}")
+
+

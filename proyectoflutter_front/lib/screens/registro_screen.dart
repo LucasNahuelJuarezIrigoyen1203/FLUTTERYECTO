@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class RegistroScreen extends StatefulWidget {
   const RegistroScreen({super.key});
@@ -15,30 +18,60 @@ class _RegistroScreenState extends State<RegistroScreen> {
   final _passController = TextEditingController();
   final _confirmPassController = TextEditingController();
 
-  void _registrar() {
-    final nombre = _nombreController.text;
-    final user = _userController.text;
-    final email = _emailController.text;
-    final confirmEmail = _confirmEmailController.text;
-    final pass = _passController.text;
-    final confirmPass = _confirmPassController.text;
-
+    void _registrar() async {
+    final nombre = _nombreController.text.trim();
+    final usuario = _userController.text.trim();
+    final correo = _emailController.text.trim();
+    final confirmCorreo = _confirmEmailController.text.trim();
+    final contrasena = _passController.text;
+    final confirmContrasena = _confirmPassController.text;
+  
     if (nombre.isEmpty ||
-        user.isEmpty ||
-        email.isEmpty ||
-        confirmEmail.isEmpty ||
-        pass.isEmpty ||
-        confirmPass.isEmpty) {
+        usuario.isEmpty ||
+        correo.isEmpty ||
+        confirmCorreo.isEmpty ||
+        contrasena.isEmpty ||
+        confirmContrasena.isEmpty) {
       _mostrarMensaje('Todos los campos son obligatorios ❗');
-    } else if (email != confirmEmail) {
+    } else if (correo != confirmCorreo) {
       _mostrarMensaje('Los correos no coinciden 📧');
-    } else if (pass != confirmPass) {
+    } else if (contrasena != confirmContrasena) {
       _mostrarMensaje('Las contraseñas no coinciden 🔐');
     } else {
-      _mostrarMensaje('Registro exitoso 🎉');
-      // Aquí podrías guardar el usuario o navegar a otra pantalla
+      try {
+        final response = await http.post(
+          Uri.parse('http://192.168.1.4:8000/usuarios'), // IP local del backend
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'nombre': nombre,
+            'usuario': usuario,
+            'correo': correo,
+            'contrasena': contrasena,
+          }),
+        );
+  
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        final mensaje = data['mensaje'];
+        final nombre = data['usuario']['nombre'];
+      
+        _mostrarMensaje('$mensaje, $nombre! 😎');
+        Future.delayed(const Duration(seconds: 2), () {
+          if (mounted) {
+            Navigator.pop(context); // Volver al login
+          }
+        });
+      } else {
+        final error = jsonDecode(response.body);
+        _mostrarMensaje('Error: ${error['detail']}');
+      }
+
+      } catch (e) {
+        _mostrarMensaje('Error de conexión: $e ⚠️');
+      }
     }
   }
+
 
   void _mostrarMensaje(String mensaje) {
     ScaffoldMessenger.of(

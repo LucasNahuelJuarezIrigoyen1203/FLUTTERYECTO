@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        _mostrarMensaje('¡Bienvenido, chamigo ${data['nombre']}! 🎉');
+        _mostrarMensaje('¡Bienvenido a krhoma, un gusto recibirte  ${data['nombre']}! 🎉');
       } else {
         _mostrarMensaje('Login fallido: ${response.body} ❌');
       }

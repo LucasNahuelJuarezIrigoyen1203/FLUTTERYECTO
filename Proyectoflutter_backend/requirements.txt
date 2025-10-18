@@ -1,5 +1,20 @@
+# Framework principal para construir APIs rápidas y modernas
 fastapi==0.110.0
+
+# Servidor ASGI para correr FastAPI en desarrollo o producción
 uvicorn==0.29.0
+
+# Conector ODBC para acceder a bases de datos SQL Server desde Python
 pyodbc==5.1.0
+
+# Librería para encriptar contraseñas con hashing seguro
 bcrypt==4.1.2
+
+# Carga variables de entorno desde archivos .env
 python-dotenv==1.0.1
+
+# Validador de correos electrónicos requerido por Pydantic cuando se usa EmailStr
+email-validator==2.0.0.post2
+
+# Pydantic para validación de datos y manejo de modelos
+pydantic==2.8.0

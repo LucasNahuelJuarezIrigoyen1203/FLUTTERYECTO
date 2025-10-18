@@ -1,7 +1,6 @@
-# main.py
-
 from fastapi import FastAPI
-from routers import usuarios,login
+from fastapi.middleware.cors import CORSMiddleware
+from routers import usuarios, login
 
 app = FastAPI(
     title="Proyectoflutter API",
@@ -9,5 +8,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Middleware CORS para permitir conexión desde Flutter Web
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Podés restringir a ["http://localhost:7237"] si querés
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Rutas
 app.include_router(usuarios.router)
 app.include_router(login.router)
