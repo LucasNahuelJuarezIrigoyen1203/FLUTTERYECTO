@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/usuarios'), // Cambiar IP si usás celular real
+        Uri.parse('$baseUrl/login'), // Cambiar IP si usás celular real
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'correo': correo,
