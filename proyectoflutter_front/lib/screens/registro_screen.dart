@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:tu_app/config.dart'
 
 class RegistroScreen extends StatefulWidget {
   const RegistroScreen({super.key});
@@ -40,7 +40,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
     } else {
       try {
         final response = await http.post(
-          Uri.parse('http://192.168.1.4:8000/usuarios'), // IP local del backend
+          Uri.parse('$baseUrl/usuarios'), // IP local del backend
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             'nombre': nombre,
