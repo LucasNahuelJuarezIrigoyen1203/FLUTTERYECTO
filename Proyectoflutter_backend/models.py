@@ -9,3 +9,8 @@ class UsuarioCreate(BaseModel):
     nombre: str
     correo: EmailStr
     contrasena: str
+
+class LoginRequest(BaseModel):
+    correo: EmailStr
+    contrasena: str
+
