@@ -1,13 +1,12 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, EmailStr
+from fastapi import APIRouter, HTTPException, Request
+from models import LoginRequest
 from db import conn
 import bcrypt
-from models import LoginRequest
 
 router = APIRouter()
 
 @router.post("/login")
-def login(datos: LoginRequest):
+def login(datos: LoginRequest, request: Request):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT id, nombre, correo, contraseña FROM usuarios WHERE correo = ? AND activo = 1",
@@ -22,10 +21,14 @@ def login(datos: LoginRequest):
     if not bcrypt.checkpw(datos.contrasena.encode('utf-8'), contrasena_hash.encode('utf-8')):
         raise HTTPException(status_code=401, detail="Contraseña incorrecta")
 
+    # Detectar IP y dispositivo
+    ip = request.client.host
+    dispositivo = request.headers.get("user-agent")
+
     # Registrar sesión
     cursor.execute(
         "INSERT INTO sesiones (usuario_id, ip, dispositivo) VALUES (?, ?, ?)",
-        (usuario[0], datos.ip, datos.dispositivo)
+        (usuario[0], ip, dispositivo)
     )
     conn.commit()
 
@@ -42,4 +45,3 @@ def login(datos: LoginRequest):
         "correo": usuario[2],
         "mensaje": "Login exitoso"
     }
-
