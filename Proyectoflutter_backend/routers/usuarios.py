@@ -18,12 +18,21 @@ def crear_usuario(usuario: UsuarioCreate):
     hashed = bcrypt.hashpw(usuario.contrasena.encode('utf-8'), bcrypt.gensalt())
     try:
         cursor.execute(
-            "INSERT INTO usuarios (nombre, correo, contraseña) VALUES (?, ?, ?)",
-            (usuario.nombre, usuario.correo, hashed.decode('utf-8'))
+            "INSERT INTO usuarios (nombre, correo, contraseña, activo) VALUES (?, ?, ?, ?)",
+            (usuario.nombre, usuario.correo, hashed.decode('utf-8'), 1)
         )
         conn.commit()
-        cursor.execute("SELECT TOP 1 id, nombre, correo FROM usuarios ORDER BY id DESC")
+
+        cursor.execute("SELECT id, nombre, correo FROM usuarios WHERE id = SCOPE_IDENTITY()")
         r = cursor.fetchone()
+
+        # Auditoría (opcional)
+        cursor.execute(
+            "INSERT INTO auditoria_eventos (usuario_id, tabla_afectada, tipo_evento) VALUES (?, ?, ?)",
+            (r[0], 'usuarios', 'registro')
+        )
+        conn.commit()
+
         return {
             "usuario": {
                 "id": r[0],
@@ -34,5 +43,6 @@ def crear_usuario(usuario: UsuarioCreate):
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error al registrar: {str(e)}")
+
 
 
