@@ -11,7 +11,7 @@ CREATE TABLE usuarios (
     correo NVARCHAR(100) UNIQUE NOT NULL,
     contraseña NVARCHAR(255) NOT NULL,
     activo BIT DEFAULT 1,
-    created_at DATETIME DEFAULT GETDATE(),
+    created_at DATETIME NOT NULL DEFAULT GETDATE(),
     updated_at DATETIME NULL
 );
 
@@ -47,7 +47,7 @@ CREATE TABLE preguntas (
     updated_at DATETIME NULL
 );
 
--- Tabla de respuestas (unificada)
+-- Tabla de respuestas
 CREATE TABLE respuestas (
     id INT PRIMARY KEY IDENTITY,
     pregunta_id INT FOREIGN KEY REFERENCES preguntas(id),
@@ -89,14 +89,15 @@ CREATE TABLE vidas (
     usuario_id INT FOREIGN KEY REFERENCES usuarios(id),
     cantidad INT NOT NULL,
     ultima_recuperacion DATETIME NOT NULL,
-    updated_at DATETIME NULL
+    updated_at DATETIME NULL,
+    CONSTRAINT chk_cantidad_positiva CHECK (cantidad >= 0)
 );
 
 -- Historial de cambios en vidas
 CREATE TABLE historial_vidas (
     id INT PRIMARY KEY IDENTITY,
     usuario_id INT FOREIGN KEY REFERENCES usuarios(id),
-    cambio INT NOT NULL,  -- Ej: +1, -1
+    cambio INT NOT NULL,
     motivo NVARCHAR(255),
     fecha DATETIME DEFAULT GETDATE()
 );
@@ -115,7 +116,8 @@ CREATE TABLE progreso (
     usuario_id INT FOREIGN KEY REFERENCES usuarios(id),
     pregunta_id INT FOREIGN KEY REFERENCES preguntas(id),
     respondio_correctamente BIT,
-    fecha DATETIME DEFAULT GETDATE()
+    fecha DATETIME DEFAULT GETDATE(),
+    CONSTRAINT uq_progreso UNIQUE (usuario_id, pregunta_id)
 );
 
 -- Auditoría de eventos
@@ -146,7 +148,7 @@ CREATE TABLE sesiones (
     id INT PRIMARY KEY IDENTITY,
     usuario_id INT FOREIGN KEY REFERENCES usuarios(id),
     ip NVARCHAR(50),
-    dispositivo NVARCHAR(100),
+    dispositivo NVARCHAR(512),  -- Aumentado para evitar truncamiento
     fecha DATETIME DEFAULT GETDATE()
 );
 

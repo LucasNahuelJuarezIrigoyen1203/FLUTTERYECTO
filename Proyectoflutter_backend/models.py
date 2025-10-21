@@ -14,15 +14,24 @@ class Usuario(BaseModel):
     correo: EmailStr
 
 # 🧬 Para crear usuario
-class UsuarioCreate(UsuarioBase):
+class UsuarioCreate(BaseModel):
+    nombre: str
+    correo: str
     contrasena: str
 
-# 🧬 Para responder usuario (con timestamps y estado)
-class UsuarioResponse(UsuarioBase):
+class UsuarioResponse(BaseModel):
     id: int
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
-    activo: Optional[bool] = True
+    nombre: str
+    correo: str
+    created_at: datetime | None
+    updated_at: datetime | None
+    activo: bool
+    
+class UsuarioUpdate(BaseModel):
+    nombre: str | None = None
+    correo: str | None = None
+    contrasena: str | None = None
+    activo: bool | None = None
 
 # 🧬 Para login
 class LoginRequest(BaseModel):

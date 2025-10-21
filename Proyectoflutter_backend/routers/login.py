@@ -1,28 +1,33 @@
 from fastapi import APIRouter, HTTPException, Request
-from models import LoginRequest
+from models import LoginRequest, UsuarioResponse
 from db import conn
 import bcrypt
 
 router = APIRouter()
 
-@router.post("/login")
+@router.post("/login", response_model=UsuarioResponse)
 def login(datos: LoginRequest, request: Request):
     cursor = conn.cursor()
+
+    # Buscar usuario por correo
     cursor.execute(
-        "SELECT id, nombre, correo, contraseña FROM usuarios WHERE correo = ? AND activo = 1",
+        "SELECT id, nombre, correo, contraseña, created_at, updated_at, activo FROM usuarios WHERE correo = ?",
         (datos.correo,)
     )
     usuario = cursor.fetchone()
 
     if not usuario:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado o inactivo")
+        raise HTTPException(status_code=404, detail="Usuario no registrado")
 
-    contrasena_hash = usuario[3]
-    if not bcrypt.checkpw(datos.contrasena.encode('utf-8'), contrasena_hash.encode('utf-8')):
+    if not usuario[6]:  # activo == 0
+        raise HTTPException(status_code=403, detail="Usuario inactivo. Verificá tu cuenta o contactá soporte")
+
+    # Validar contraseña
+    if not bcrypt.checkpw(datos.contrasena.encode('utf-8'), usuario[3].encode('utf-8')):
         raise HTTPException(status_code=401, detail="Contraseña incorrecta")
 
     # Detectar IP y dispositivo
-    ip = request.client.host
+    ip = request.headers.get("x-forwarded-for") or request.client.host
     dispositivo = request.headers.get("user-agent")
 
     # Registrar sesión
@@ -39,9 +44,12 @@ def login(datos: LoginRequest, request: Request):
     )
     conn.commit()
 
-    return {
-        "id": usuario[0],
-        "nombre": usuario[1],
-        "correo": usuario[2],
-        "mensaje": "Login exitoso"
-    }
+    # Respuesta estructurada
+    return UsuarioResponse(
+        id=usuario[0],
+        nombre=usuario[1],
+        correo=usuario[2],
+        created_at=usuario[4],
+        updated_at=usuario[5],
+        activo=usuario[6]
+    )

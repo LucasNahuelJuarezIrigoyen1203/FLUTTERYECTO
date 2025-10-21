@@ -17,6 +17,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/healthcheck")
+def healthcheck():
+    return {"status": "ok"}
+
 # Rutas
 app.include_router(usuarios_crudp.router)
 app.include_router(login.router)
