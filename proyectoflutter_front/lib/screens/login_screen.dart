@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/login'), // Cambiar IP si usás celular real
+        Uri.parse('$baseUrl/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'correo': correo,
@@ -36,7 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        _mostrarMensaje('¡Bienvenido a khroma, un gusto recibirte  ${data['nombre']}! 🎉');
+        _mostrarMensaje('¡Bienvenido a khroma, un gusto recibirte ${data['nombre']}! 🎉');
+        // ✅ Navegación a la página inicial
+        Navigator.pushReplacementNamed(context, '/paginainicial');
       } else {
         _mostrarMensaje('Login fallido: ${response.body} ❌');
       }
