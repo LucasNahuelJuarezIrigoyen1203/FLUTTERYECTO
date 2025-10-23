@@ -13,21 +13,24 @@ class PaginaInicial extends StatelessWidget {
           children: [
             TemaCard(
               title: 'TEMA 1',
-              imagePath: 'assets/images/tema1.png',
+              imagePath: 'assets/images/1.png',
+              animalPath: 'assets/images/panda_rojo.png',
               onTap: () {
                 Navigator.pushNamed(context, '/tema1');
               },
             ),
             TemaCard(
               title: 'TEMA 2',
-              imagePath: 'assets/images/tema2.png',
+              imagePath: 'assets/images/2.png',
+              animalPath: 'assets/images/ballena.png',
               onTap: () {
                 Navigator.pushNamed(context, '/tema2');
               },
             ),
             TemaCard(
               title: 'TEMA 3',
-              imagePath: 'assets/images/tema3.png',
+              imagePath: 'assets/images/3.png',
+              animalPath: 'assets/images/cuervo.png',
               onTap: () {
                 Navigator.pushNamed(context, '/tema3');
               },
@@ -73,12 +76,14 @@ class PaginaInicial extends StatelessWidget {
 class TemaCard extends StatefulWidget {
   final String title;
   final String imagePath;
+  final String animalPath;
   final VoidCallback onTap;
 
   const TemaCard({
     super.key,
     required this.title,
     required this.imagePath,
+    required this.animalPath,
     required this.onTap,
   });
 
@@ -104,19 +109,47 @@ class _TemaCardState extends State<TemaCard> {
           child: Card(
             elevation: 4,
             margin: const EdgeInsets.symmetric(vertical: 12),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
+            clipBehavior: Clip.hardEdge,
+            child: SizedBox(
+              height: 180,
+              child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  Text(
-                    widget.title,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 12),
+                  // Fondo principal
                   Image.asset(
                     widget.imagePath,
-                    height: 120,
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
+                  ),
+
+                  // Animal en el lado izquierdo
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16),
+                      child: Image.asset(
+                        widget.animalPath,
+                        height: 100,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+
+                  // Texto centrado con sombra
+                  Center(
+                    child: Text(
+                      widget.title,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            shadows: [
+                              Shadow(
+                                offset: const Offset(1, 1),
+                                blurRadius: 4,
+                                color: Colors.black.withOpacity(0.6),
+                              ),
+                            ],
+                          ),
+                    ),
                   ),
                 ],
               ),
