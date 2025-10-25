@@ -19,6 +19,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
   assets:
     - assets/images/
+    - assets/images/corazon_normal.gif
+    - assets/images/corazon_recuperado.gif
+    - assets/images/corazon_roto.gif

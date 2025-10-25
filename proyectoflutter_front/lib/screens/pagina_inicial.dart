@@ -12,7 +12,7 @@ class PaginaInicial extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           children: [
             TemaCard(
-              title: 'TEMA 1',
+              title: 'Desarrollo Móvil',
               imagePath: 'assets/images/1.png',
               animalPath: 'assets/images/panda_rojo.png',
               onTap: () {
@@ -20,7 +20,7 @@ class PaginaInicial extends StatelessWidget {
               },
             ),
             TemaCard(
-              title: 'TEMA 2',
+              title: 'Desarrollo Web',
               imagePath: 'assets/images/2.png',
               animalPath: 'assets/images/ballena.png',
               onTap: () {
@@ -28,7 +28,7 @@ class PaginaInicial extends StatelessWidget {
               },
             ),
             TemaCard(
-              title: 'TEMA 3',
+              title: 'Desarrollo de Escritorio',
               imagePath: 'assets/images/3.png',
               animalPath: 'assets/images/cuervo.png',
               onTap: () {
@@ -139,7 +139,7 @@ class _TemaCardState extends State<TemaCard> {
                     child: Text(
                       widget.title,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            color: Colors.white,
+                            color: const Color.fromARGB(255, 248, 157, 97),
                             fontWeight: FontWeight.bold,
                             shadows: [
                               Shadow(
