@@ -10,8 +10,6 @@ void main() {
   runApp(const LoginApp());
 }
 
-
-
 class LoginApp extends StatelessWidget {
   const LoginApp({super.key});
 

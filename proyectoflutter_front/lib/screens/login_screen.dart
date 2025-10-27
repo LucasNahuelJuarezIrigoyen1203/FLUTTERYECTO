@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'registro_screen.dart';
 import '../config.dart';
 import '../widgets/corner_animals.dart'; // Asegurate de importar tu widget
+import '../models/usuario_activo.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -36,6 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        UsuarioActivo.nombre = data['nombre'];
+        UsuarioActivo.correo = data['correo'];
         _mostrarMensaje(
           '¡Bienvenido a khroma, un gusto recibirte ${data['nombre']}! 🎉',
         );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../screens/usuario_screen.dart';
+import '../models/usuario_activo.dart';
 
 class PaginaInicial extends StatelessWidget {
   const PaginaInicial({super.key});
@@ -13,24 +15,24 @@ class PaginaInicial extends StatelessWidget {
           children: [
             TemaCard(
               title: 'Desarrollo Móvil',
-              imagePath: 'assets/images/1.png',
-              animalPath: 'assets/images/panda_rojo.png',
+              imagePath: 'assets/images/3.png',
+              animalPath: 'assets/images/cuervo.png',
               onTap: () {
                 Navigator.pushNamed(context, '/tema1');
               },
             ),
             TemaCard(
               title: 'Desarrollo Web',
-              imagePath: 'assets/images/2.png',
-              animalPath: 'assets/images/ballena.png',
+              imagePath: 'assets/images/1.png',
+              animalPath: 'assets/images/panda_rojo.png',
               onTap: () {
                 Navigator.pushNamed(context, '/tema2');
               },
             ),
             TemaCard(
               title: 'Desarrollo de Escritorio',
-              imagePath: 'assets/images/3.png',
-              animalPath: 'assets/images/cuervo.png',
+              imagePath: 'assets/images/2.png',
+              animalPath: 'assets/images/ballena.png',
               onTap: () {
                 Navigator.pushNamed(context, '/tema3');
               },
@@ -49,7 +51,15 @@ class PaginaInicial extends StatelessWidget {
               // Ya estás en inicio
               break;
             case 2:
-              Navigator.pushNamed(context, '/perfil');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UsuarioScreen(
+                    nombre: UsuarioActivo.nombre,
+                    correo: UsuarioActivo.correo,
+                  ),
+                ),
+              );
               break;
           }
         },
@@ -58,14 +68,8 @@ class PaginaInicial extends StatelessWidget {
             icon: Icon(Icons.emoji_events),
             label: 'Logros',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
     );
@@ -116,10 +120,7 @@ class _TemaCardState extends State<TemaCard> {
                 fit: StackFit.expand,
                 children: [
                   // Fondo principal
-                  Image.asset(
-                    widget.imagePath,
-                    fit: BoxFit.cover,
-                  ),
+                  Image.asset(widget.imagePath, fit: BoxFit.cover),
 
                   // Animal en el lado izquierdo
                   Align(
@@ -138,7 +139,8 @@ class _TemaCardState extends State<TemaCard> {
                   Center(
                     child: Text(
                       widget.title,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
                             color: const Color.fromARGB(255, 248, 157, 97),
                             fontWeight: FontWeight.bold,
                             shadows: [
