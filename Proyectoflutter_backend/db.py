@@ -6,6 +6,7 @@ load_dotenv()
 
 ENTORNO = os.getenv("ENTORNO", "local")
 
+# 🔌 Conexión según entorno
 if ENTORNO == "local":
     CONNECTION_STRING = (
         "DRIVER={ODBC Driver 17 for SQL Server};"
@@ -21,10 +22,13 @@ elif ENTORNO == "instituto":
         f"UID={os.getenv('SQL_USER')};"
         f"PWD={os.getenv('SQL_PASSWORD')};"
     )
+else:
+    raise ValueError("⚠️ ENTORNO no reconocido. Usá 'local' o 'instituto'.")
 
+# 🌐 Conexión global
 try:
     conn = pyodbc.connect(CONNECTION_STRING)
     print("✅ Conexión exitosa a SQL Server")
 except Exception as e:
     print(f"❌ Error de conexión a SQL Server: {e}")
-    conn = None  # Evita que el resto del código falle si se importa
+    conn = None  # Evita fallos si se importa en otros módulos

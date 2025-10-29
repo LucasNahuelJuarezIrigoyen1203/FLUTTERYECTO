@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request
 from models import VidaCreate, VidaResponse, VidaUpdate, EvaluacionNivel
 from db import conn
-from datetime import datetime, timedelta
+from datetime import datetime
 
 router = APIRouter()
 
@@ -11,11 +11,9 @@ def vidas_con_estado(usuario_id: int):
     cursor = conn.cursor()
     ahora = datetime.now()
 
-    # Vidas activas
     cursor.execute("SELECT COUNT(*) FROM vidas WHERE usuario_id = ? AND activa = 1", (usuario_id,))
     activas = cursor.fetchone()[0]
 
-    # Buscar vida en regeneración
     cursor.execute(
         "SELECT TOP 1 id, updated_at FROM vidas WHERE usuario_id = ? AND activa = 0 ORDER BY updated_at DESC",
         (usuario_id,)
@@ -28,7 +26,6 @@ def vidas_con_estado(usuario_id: int):
         if tiempo_pasado < 180:
             restante = int(180 - tiempo_pasado)
         else:
-            # Reactivar automáticamente
             cursor.execute("UPDATE vidas SET activa = 1, updated_at = ? WHERE id = ?", (ahora, vida[0]))
             conn.commit()
             restante = 0
@@ -38,7 +35,7 @@ def vidas_con_estado(usuario_id: int):
         "vida_en_regeneracion": {
             "id": vida[0],
             "restante_segundos": restante
-        } if restante else None
+        } if restante is not None else None
     }
 
 # 🔁 POST /usuarios/{usuario_id}/vidas — Crear nueva vida
@@ -127,7 +124,6 @@ def reactivar_vida(id: int):
 @router.post("/usuarios/{usuario_id}/vidas/evaluar")
 def evaluar_nivel(usuario_id: int, datos: EvaluacionNivel, request: Request):
     cursor = conn.cursor()
-
     porcentaje = (datos.puntaje_obtenido / datos.puntaje_maximo) * 100
 
     if porcentaje < 45:

@@ -10,7 +10,7 @@ class AvatarPorDefecto extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(size / 2),
       child: Image.asset(
-        'assets/images/panda_rojo.png',
+        'assets/images/gato.png',
         width: size,
         height: size,
         fit: BoxFit.cover,

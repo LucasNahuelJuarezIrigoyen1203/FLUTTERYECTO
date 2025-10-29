@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import usuarios_crudp, login, vidas_crudp 
+from routers import usuarios_crudp, login, vidas_crudp, respuestas, niveles
 
 app = FastAPI(
     title="Proyectoflutter API",
@@ -22,6 +22,10 @@ def healthcheck():
     return {"status": "ok"}
 
 # Rutas
+
+
+app.include_router(respuestas.router, prefix="/respuestas", tags=["Respuestas"])
+app.include_router(niveles.router, prefix="/niveles", tags=["Niveles"])
 app.include_router(usuarios_crudp.router)
 app.include_router(login.router)
 app.include_router(vidas_crudp.router) 

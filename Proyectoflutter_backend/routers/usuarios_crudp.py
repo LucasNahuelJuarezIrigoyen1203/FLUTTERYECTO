@@ -19,24 +19,15 @@ def listar_usuarios():
         rows = cursor.fetchall()
         cursor.close()
 
-        return [
-            UsuarioResponse(
-                id=r[0],
-                nombre=r[1],
-                correo=r[2],
-                created_at=r[3],
-                updated_at=r[4],
-                activo=r[5]
-            )
-            for r in rows
-        ]
+        return [UsuarioResponse(
+            id=r[0], nombre=r[1], correo=r[2],
+            created_at=r[3], updated_at=r[4], activo=r[5]
+        ) for r in rows]
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al listar usuarios: {str(e)}")
-    
-    
-# 🔁 GET /usuarios/{id} — Obtener usuario por ID
 
+# 🔁 GET /usuarios/{id} — Obtener usuario por ID
 @router.get("/usuarios/{id}", response_model=UsuarioResponse)
 def obtener_usuario(id: int):
     try:
@@ -53,12 +44,8 @@ def obtener_usuario(id: int):
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
         return UsuarioResponse(
-            id=r[0],
-            nombre=r[1],
-            correo=r[2],
-            created_at=r[3],
-            updated_at=r[4],
-            activo=r[5]
+            id=r[0], nombre=r[1], correo=r[2],
+            created_at=r[3], updated_at=r[4], activo=r[5]
         )
 
     except Exception as e:
@@ -70,59 +57,37 @@ def crear_usuario(usuario: UsuarioCreate):
     try:
         cursor = conn.cursor()
 
-        # Verificar si el correo ya existe
         cursor.execute("SELECT id FROM usuarios WHERE correo = ?", (usuario.correo,))
         if cursor.fetchone():
             cursor.close()
             raise HTTPException(status_code=409, detail="El correo ya está registrado")
 
-        # Encriptar contraseña
         hashed = bcrypt.hashpw(usuario.contrasena.encode('utf-8'), bcrypt.gensalt())
 
-        # Insertar usuario y recuperar ID
-        cursor.execute(
-            """
+        cursor.execute("""
             INSERT INTO usuarios (nombre, correo, contraseña, activo, created_at)
             OUTPUT INSERTED.id
             VALUES (?, ?, ?, ?, ?)
-            """,
-            (usuario.nombre, usuario.correo, hashed.decode('utf-8'), 1, datetime.now())
-        )
+        """, (usuario.nombre, usuario.correo, hashed.decode('utf-8'), 1, datetime.now()))
         usuario_id = cursor.fetchone()[0]
 
-        # Obtener datos completos del usuario
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT id, nombre, correo, created_at, updated_at, activo
             FROM usuarios
             WHERE id = ?
-            """,
-            (usuario_id,)
-        )
+        """, (usuario_id,))
         r = cursor.fetchone()
 
-        if not r:
-            cursor.close()
-            raise HTTPException(status_code=500, detail="Error interno: no se pudo recuperar el usuario recién creado")
-
-        # Registrar evento en auditoría
-        cursor.execute(
-            """
+        cursor.execute("""
             INSERT INTO auditoria_eventos (usuario_id, tabla_afectada, tipo_evento)
             VALUES (?, ?, ?)
-            """,
-            (usuario_id, 'usuarios', 'registro')
-        )
+        """, (usuario_id, 'usuarios', 'registro'))
         conn.commit()
         cursor.close()
 
         return UsuarioResponse(
-            id=r[0],
-            nombre=r[1],
-            correo=r[2],
-            created_at=r[3],
-            updated_at=r[4],
-            activo=r[5]
+            id=r[0], nombre=r[1], correo=r[2],
+            created_at=r[3], updated_at=r[4], activo=r[5]
         )
 
     except Exception as e:
@@ -134,7 +99,6 @@ def actualizar_usuario(id: int, datos: UsuarioUpdate):
     try:
         cursor = conn.cursor()
 
-        # Verificar que el usuario exista
         cursor.execute("SELECT id FROM usuarios WHERE id = ?", (id,))
         if not cursor.fetchone():
             cursor.close()
@@ -169,7 +133,6 @@ def actualizar_usuario(id: int, datos: UsuarioUpdate):
         cursor.execute(query, valores)
         conn.commit()
 
-        # Obtener datos actualizados
         cursor.execute("""
             SELECT id, nombre, correo, created_at, updated_at, activo
             FROM usuarios
@@ -177,7 +140,6 @@ def actualizar_usuario(id: int, datos: UsuarioUpdate):
         """, (id,))
         r = cursor.fetchone()
 
-        # Registrar auditoría
         cursor.execute("""
             INSERT INTO auditoria_eventos (usuario_id, tabla_afectada, tipo_evento)
             VALUES (?, ?, ?)
@@ -186,12 +148,8 @@ def actualizar_usuario(id: int, datos: UsuarioUpdate):
         cursor.close()
 
         return UsuarioResponse(
-            id=r[0],
-            nombre=r[1],
-            correo=r[2],
-            created_at=r[3],
-            updated_at=r[4],
-            activo=r[5]
+            id=r[0], nombre=r[1], correo=r[2],
+            created_at=r[3], updated_at=r[4], activo=r[5]
         )
 
     except Exception as e:
@@ -203,27 +161,20 @@ def desactivar_usuario(id: int):
     try:
         cursor = conn.cursor()
 
-        # Verificar que el usuario exista
         cursor.execute("SELECT id FROM usuarios WHERE id = ?", (id,))
         if not cursor.fetchone():
             cursor.close()
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-        # Desactivar usuario
-        cursor.execute(
-            "UPDATE usuarios SET activo = 0, updated_at = ? WHERE id = ?",
-            (datetime.now(), id)
-        )
+        cursor.execute("UPDATE usuarios SET activo = 0, updated_at = ? WHERE id = ?", (datetime.now(), id))
         conn.commit()
 
-        # Registrar auditoría
-        cursor.execute(
-            "INSERT INTO auditoria_eventos (usuario_id, tabla_afectada, tipo_evento) VALUES (?, ?, ?)",
-            (id, 'usuarios', 'desactivado')
-        )
+        cursor.execute("""
+            INSERT INTO auditoria_eventos (usuario_id, tabla_afectada, tipo_evento)
+            VALUES (?, ?, ?)
+        """, (id, 'usuarios', 'desactivado'))
         conn.commit()
 
-        # Obtener datos actualizados
         cursor.execute("""
             SELECT id, nombre, correo, created_at, updated_at, activo
             FROM usuarios
@@ -233,12 +184,8 @@ def desactivar_usuario(id: int):
         cursor.close()
 
         return UsuarioResponse(
-            id=r[0],
-            nombre=r[1],
-            correo=r[2],
-            created_at=r[3],
-            updated_at=r[4],
-            activo=r[5]
+            id=r[0], nombre=r[1], correo=r[2],
+            created_at=r[3], updated_at=r[4], activo=r[5]
         )
 
     except Exception as e:
@@ -250,27 +197,20 @@ def reactivar_usuario(id: int):
     try:
         cursor = conn.cursor()
 
-        # Verificar que el usuario exista
         cursor.execute("SELECT id FROM usuarios WHERE id = ?", (id,))
         if not cursor.fetchone():
             cursor.close()
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-        # Reactivar usuario
-        cursor.execute(
-            "UPDATE usuarios SET activo = 1, updated_at = ? WHERE id = ?",
-            (datetime.now(), id)
-        )
+        cursor.execute("UPDATE usuarios SET activo = 1, updated_at = ? WHERE id = ?", (datetime.now(), id))
         conn.commit()
 
-        # Registrar auditoría
-        cursor.execute(
-            "INSERT INTO auditoria_eventos (usuario_id, tabla_afectada, tipo_evento) VALUES (?, ?, ?)",
-            (id, 'usuarios', 'reactivado')
-        )
+        cursor.execute("""
+            INSERT INTO auditoria_eventos (usuario_id, tabla_afectada, tipo_evento)
+            VALUES (?, ?, ?)
+        """, (id, 'usuarios', 'reactivado'))
         conn.commit()
 
-        # Obtener datos actualizados
         cursor.execute("""
             SELECT id, nombre, correo, created_at, updated_at, activo
             FROM usuarios
@@ -280,12 +220,8 @@ def reactivar_usuario(id: int):
         cursor.close()
 
         return UsuarioResponse(
-            id=r[0],
-            nombre=r[1],
-            correo=r[2],
-            created_at=r[3],
-            updated_at=r[4],
-            activo=r[5]
+            id=r[0], nombre=r[1], correo=r[2],
+            created_at=r[3], updated_at=r[4], activo=r[5]
         )
 
     except Exception as e:

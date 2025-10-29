@@ -9,11 +9,12 @@ router = APIRouter()
 def login(datos: LoginRequest, request: Request):
     cursor = conn.cursor()
 
-    # Buscar usuario por correo
-    cursor.execute(
-        "SELECT id, nombre, correo, contraseña, created_at, updated_at, activo FROM usuarios WHERE correo = ?",
-        (datos.correo,)
-    )
+    # 🔍 Buscar usuario por correo
+    cursor.execute("""
+        SELECT id, nombre, correo, contraseña, created_at, updated_at, activo
+        FROM usuarios
+        WHERE correo = ?
+    """, (datos.correo,))
     usuario = cursor.fetchone()
 
     if not usuario:
@@ -22,29 +23,30 @@ def login(datos: LoginRequest, request: Request):
     if not usuario[6]:  # activo == 0
         raise HTTPException(status_code=403, detail="Usuario inactivo. Verificá tu cuenta o contactá soporte")
 
-    # Validar contraseña
+    # 🔐 Validar contraseña
     if not bcrypt.checkpw(datos.contrasena.encode('utf-8'), usuario[3].encode('utf-8')):
         raise HTTPException(status_code=401, detail="Contraseña incorrecta")
 
-    # Detectar IP y dispositivo
+    # 🌐 Detectar IP y dispositivo
     ip = request.headers.get("x-forwarded-for") or request.client.host
     dispositivo = request.headers.get("user-agent")
 
-    # Registrar sesión
-    cursor.execute(
-        "INSERT INTO sesiones (usuario_id, ip, dispositivo) VALUES (?, ?, ?)",
-        (usuario[0], ip, dispositivo)
-    )
-    conn.commit()
+    # 📝 Registrar sesión
+    cursor.execute("""
+        INSERT INTO sesiones (usuario_id, ip, dispositivo)
+        VALUES (?, ?, ?)
+    """, (usuario[0], ip, dispositivo))
 
-    # Registrar evento
-    cursor.execute(
-        "INSERT INTO auditoria_eventos (usuario_id, tabla_afectada, tipo_evento) VALUES (?, ?, ?)",
-        (usuario[0], 'usuarios', 'login_exitoso')
-    )
-    conn.commit()
+    # 🧾 Registrar evento
+    cursor.execute("""
+        INSERT INTO auditoria_eventos (usuario_id, tabla_afectada, tipo_evento)
+        VALUES (?, ?, ?)
+    """, (usuario[0], 'usuarios', 'login_exitoso'))
 
-    # Respuesta estructurada
+    conn.commit()
+    cursor.close()
+
+    # ✅ Respuesta estructurada
     return UsuarioResponse(
         id=usuario[0],
         nombre=usuario[1],
