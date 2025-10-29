@@ -25,7 +25,6 @@ class UsuarioCreate(BaseModel):
     nivel_actual: int = 1
     progreso: float = 0.0
 
-# Para responder al frontend
 class UsuarioResponse(BaseModel):
     id: int
     nombre: str
@@ -34,8 +33,9 @@ class UsuarioResponse(BaseModel):
     updated_at: datetime | None
     activo: bool
     vidas: int
-    nivel_actual: int
-    progreso: float
+    nivel_actual: int  # ← este puede ser el nivel global o inicial
+    progreso: float    # ← este puede ser el promedio global
+    ramas_estado: list['RamaEstado']  # ← estado por rama
 
 # Para actualizar usuario
 class UsuarioUpdate(BaseModel):
@@ -98,3 +98,33 @@ class PreguntaConOpciones(BaseModel):
     id: int
     texto: str
     opciones: list[Opcion]
+
+class Nivel(BaseModel):
+    id: int
+    nombre: str
+
+class NivelDetalle(BaseModel):
+    id: int
+    nombre: str
+    rama: str
+    dificultad: str
+    multiplicador: float
+
+class RamaEstado(BaseModel):
+    rama_id: int
+    rama_nombre: str
+    nivel_actual: int
+    progreso: float
+    
+class RamaEstado(BaseModel):
+    rama_id: int
+    rama_nombre: str
+    nivel_actual: int
+    progreso: float
+
+class EstadoUsuarioResponse(BaseModel):
+    vidas: int
+    ramas_estado: list[RamaEstado]
+    
+class UsuarioEstadoResponse(UsuarioResponse):
+    ramas_estado: list[RamaEstado]

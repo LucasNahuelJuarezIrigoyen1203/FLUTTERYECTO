@@ -25,9 +25,29 @@ class LoginApp extends StatelessWidget {
         '/tema1': (context) => const Tema1Page(),
         '/tema2': (context) => const Tema2Page(),
         '/tema3': (context) => const Tema3Page(),
-        '/nivel1_teoria': (context) => const PantallaNivel(),
-        '/nivel2_teoria': (context) => const PantallaNivel(),
-        '/nivel3_teoria': (context) => const PantallaNivel(),
+
+        // Rutas dinámicas para niveles
+        '/nivel1_teoria': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+          return PantallaNivel(
+            usuarioId: args['usuarioId'],
+            nivelId: 1,
+          );
+        },
+        '/nivel2_teoria': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+          return PantallaNivel(
+            usuarioId: args['usuarioId'],
+            nivelId: 2,
+          );
+        },
+        '/nivel3_teoria': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+          return PantallaNivel(
+            usuarioId: args['usuarioId'],
+            nivelId: 3,
+          );
+        },
       },
     );
   }
