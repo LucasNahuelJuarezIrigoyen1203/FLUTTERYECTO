@@ -102,10 +102,12 @@ class PreguntaConOpciones(BaseModel):
 class Nivel(BaseModel):
     id: int
     nombre: str
+    puntos: int
 
 class NivelDetalle(BaseModel):
     id: int
     nombre: str
+    puntos: int
     rama: str
     dificultad: str
     multiplicador: float

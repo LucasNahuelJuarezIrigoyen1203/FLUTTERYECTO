@@ -22,7 +22,7 @@ class LoginApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
         '/paginainicial': (context) => const PaginaInicial(),
-        '/tema1': (context) => const Tema1Page(),
+        '/tema1': (context) => const AplicacionesMovilesPage(),
         '/tema2': (context) => const Tema2Page(),
         '/tema3': (context) => const Tema3Page(),
 

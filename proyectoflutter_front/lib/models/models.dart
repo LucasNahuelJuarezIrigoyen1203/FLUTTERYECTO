@@ -86,3 +86,17 @@ class NivelDetalle {
     );
   }
 }
+
+class Rama {
+  final int id;
+  final String nombre;
+
+  Rama({required this.id, required this.nombre});
+
+  factory Rama.fromJson(Map<String, dynamic> json) {
+    return Rama(
+      id: json['id'],
+      nombre: json['nombre'],
+    );
+  }
+}

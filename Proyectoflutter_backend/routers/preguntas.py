@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models import PreguntaConOpciones
+from models import PreguntaConOpciones, Opcion
 from db import conn
 
 router = APIRouter()
@@ -13,11 +13,12 @@ def obtener_pregunta_por_nivel(nivel_id: int):
         SELECT TOP 1 id, texto
         FROM preguntas
         WHERE nivel_id = ? AND activo = 1
-        ORDER BY NEWID()  -- aleatoriza si hay varias preguntas por nivel
+        ORDER BY NEWID()
     """, (nivel_id,))
     pregunta = cursor.fetchone()
 
     if not pregunta:
+        cursor.close()
         raise HTTPException(status_code=404, detail="No hay pregunta activa para este nivel")
 
     pregunta_id, texto = pregunta
@@ -29,10 +30,13 @@ def obtener_pregunta_por_nivel(nivel_id: int):
         WHERE pregunta_id = ?
         ORDER BY id
     """, (pregunta_id,))
-    opciones = cursor.fetchall()
+    opciones_raw = cursor.fetchall()
+    cursor.close()
+
+    opciones = [Opcion(id=o[0], texto=o[1]) for o in opciones_raw]
 
     return PreguntaConOpciones(
         id=pregunta_id,
         texto=texto,
-        opciones=[{"id": o[0], "texto": o[1]} for o in opciones]
+        opciones=opciones
     )
