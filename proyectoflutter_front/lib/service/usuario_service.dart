@@ -4,7 +4,7 @@ import '../config.dart';
 import '../models/usuario_estado.dart';
 
 Future<UsuarioEstado> fetchEstadoUsuario(int usuarioId) async {
-  final response = await http.get(Uri.parse('$baseUrl/estado_usuario/$usuarioId'));
+  final response = await http.get(Uri.parse('$baseUrl/estado_usuario/$usuarioId/estado'));
   if (response.statusCode == 200) {
     return UsuarioEstado.fromJson(jsonDecode(response.body));
   } else {

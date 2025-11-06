@@ -5,8 +5,8 @@ import '../models/usuario_activo.dart';
 import '../service/nivel_service.dart';
 import '../service/usuario_service.dart';
 
-class AplicacionesMovilesPage extends StatelessWidget {
-  const AplicacionesMovilesPage({super.key});
+class AplicacionesMoviles extends StatelessWidget {
+  const AplicacionesMoviles({super.key});
 
   @override
   Widget build(BuildContext context) {

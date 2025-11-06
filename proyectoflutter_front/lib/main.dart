@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/pagina_inicial.dart';
-import 'screens/Aplicaciones_moviles.dart';
-import 'screens/S_O_y_Redes.dart';
-import 'screens/Destock.dart';
+import 'screens/aplicaciones_moviles.dart';
+import 'screens/s_o_y_redes.dart';
+import 'screens/destock.dart';
 import 'screens/pantalla_nivel.dart';
 
 void main() {

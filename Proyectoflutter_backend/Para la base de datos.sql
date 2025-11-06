@@ -135,7 +135,7 @@ CREATE TABLE logros (
     nombre NVARCHAR(100),
     descripcion NVARCHAR(255)
 );
-
+--usuarios y sus logros 
 CREATE TABLE usuarios_logros (
     id INT PRIMARY KEY IDENTITY,
     usuario_id INT FOREIGN KEY REFERENCES usuarios(id),
