@@ -25,7 +25,8 @@ CREATE TABLE ramas (
 CREATE TABLE niveles (
     id INT PRIMARY KEY IDENTITY,
     nombre NVARCHAR(50) NOT NULL,
-    puntos_requeridos INT NOT NULL
+    puntos_requeridos INT NOT NULL,
+    ramas_id INT FOREIGN KEY REFERENCES ramas(id)
 );
 
 -- Tabla de dificultades
@@ -150,6 +151,21 @@ CREATE TABLE sesiones (
     ip NVARCHAR(50),
     dispositivo NVARCHAR(512),  -- Aumentado para evitar truncamiento
     fecha DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE usuario_estado (
+  id INT PRIMARY KEY IDENTITY(1,1),
+  usuario_id INT NOT NULL,
+  rama_id INT NOT NULL,
+  nivel_actual INT DEFAULT 1,
+  progreso FLOAT DEFAULT 0.0,
+  activo BIT DEFAULT 1,
+  vidas INT DEFAULT 5,
+  created_at DATETIME DEFAULT GETDATE(),
+  updated_at DATETIME DEFAULT GETDATE(),
+
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+  FOREIGN KEY (rama_id) REFERENCES ramas(id)
 );
 
 -- Índices para rendimiento
