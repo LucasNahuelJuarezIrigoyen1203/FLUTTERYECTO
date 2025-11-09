@@ -1,13 +1,14 @@
+from __future__ import annotations
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime
 
-# Base para usuario
+# 🧍 Base para usuario
 class UsuarioBase(BaseModel):
     nombre: str
     correo: EmailStr
 
-# Usuario completo (usado en consultas internas)
+# 🧍 Usuario completo (usado en consultas internas)
 class Usuario(BaseModel):
     id: int
     nombre: str
@@ -16,7 +17,7 @@ class Usuario(BaseModel):
     nivel_actual: int
     progreso: float
 
-# Para crear usuario
+# 🧍 Crear usuario
 class UsuarioCreate(BaseModel):
     nombre: str
     correo: str
@@ -25,34 +26,35 @@ class UsuarioCreate(BaseModel):
     nivel_actual: int = 1
     progreso: float = 0.0
 
+# 🧍 Actualizar usuario
+class UsuarioUpdate(BaseModel):
+    nombre: Optional[str] = None
+    correo: Optional[str] = None
+    contrasena: Optional[str] = None
+    activo: Optional[bool] = None
+    vidas: Optional[int] = None
+    nivel_actual: Optional[int] = None
+    progreso: Optional[float] = None
+
+# 🧍 Respuesta de usuario (usada en endpoints)
 class UsuarioResponse(BaseModel):
     id: int
     nombre: str
     correo: str
-    created_at: datetime | None
-    updated_at: datetime | None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     activo: bool
     vidas: int
-    nivel_actual: int  # ← este puede ser el nivel global o inicial
-    progreso: float    # ← este puede ser el promedio global
-    ramas_estado: list['RamaEstado']  # ← estado por rama
+    nivel_actual: int
+    progreso: float
+    ramas_estado: list[RamaEstado]
 
-# Para actualizar usuario
-class UsuarioUpdate(BaseModel):
-    nombre: str | None = None
-    correo: str | None = None
-    contrasena: str | None = None
-    activo: bool | None = None
-    vidas: int | None = None
-    nivel_actual: int | None = None
-    progreso: float | None = None
-    
-# 🧬 Para login
+# 🧬 Login
 class LoginRequest(BaseModel):
     correo: EmailStr
     contrasena: str
 
-# 🧬 Evaluación de nivel (usado en sistema de vidas)
+# 🧬 Evaluación de nivel
 class EvaluacionNivel(BaseModel):
     puntaje_obtenido: int
     puntaje_maximo: int
@@ -60,16 +62,14 @@ class EvaluacionNivel(BaseModel):
     tema: str
     modo: str
 
-# 🧬 Crear vida (uniforme)
+# 🧬 Vida
 class VidaCreate(BaseModel):
-    puntos: int = 100  # Valor fijo para todas las vidas
+    puntos: int = 100
 
-# 🧬 Actualizar vida
 class VidaUpdate(BaseModel):
     puntos: Optional[int] = None
     activa: Optional[bool] = None
 
-# 🧬 Respuesta de vida
 class VidaResponse(BaseModel):
     id: int
     usuario_id: int
@@ -78,7 +78,7 @@ class VidaResponse(BaseModel):
     updated_at: datetime
     activa: bool
 
-
+# 🧬 Respuesta a pregunta
 class RespuestaInput(BaseModel):
     usuario_id: int
     pregunta_id: int
@@ -88,8 +88,9 @@ class RespuestaOutput(BaseModel):
     correcta: bool
     nivel_actual: int
     progreso: float
-    vidas_restantes: int | None = None
+    vidas_restantes: Optional[int] = None
 
+# 🧠 Preguntas y opciones
 class Opcion(BaseModel):
     id: int
     texto: str
@@ -99,6 +100,7 @@ class PreguntaConOpciones(BaseModel):
     texto: str
     opciones: list[Opcion]
 
+# 📊 Niveles
 class Nivel(BaseModel):
     id: int
     nombre: str
@@ -112,21 +114,19 @@ class NivelDetalle(BaseModel):
     dificultad: str
     multiplicador: float
 
+# 🌿 Estado por rama
 class RamaEstado(BaseModel):
     rama_id: int
     rama_nombre: str
     nivel_actual: int
     progreso: float
-    
-class RamaEstado(BaseModel):
-    rama_id: int
-    rama_nombre: str
-    nivel_actual: int
-    progreso: float
+    activo: Optional[bool] = True
+    vidas: Optional[int] = 5
 
+# 🧍 Estado completo del usuario
 class EstadoUsuarioResponse(BaseModel):
     vidas: int
     ramas_estado: list[RamaEstado]
-    
+
 class UsuarioEstadoResponse(UsuarioResponse):
     ramas_estado: list[RamaEstado]

@@ -10,6 +10,9 @@ CREATE TABLE usuarios (
     nombre NVARCHAR(100) NOT NULL,
     correo NVARCHAR(100) UNIQUE NOT NULL,
     contraseña NVARCHAR(255) NOT NULL,
+    vidas INT DEFAULT 5,
+    nivel_actual INT DEFAULT 1,
+    progreso FLOAT DEFAULT 0.0,
     activo BIT DEFAULT 1,
     created_at DATETIME NOT NULL DEFAULT GETDATE(),
     updated_at DATETIME NULL

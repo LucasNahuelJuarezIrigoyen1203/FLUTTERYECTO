@@ -32,12 +32,14 @@ class RespuestaOutput {
   final int nivelActual;
   final double progreso;
   final int? vidasRestantes;
+  final int? siguientePreguntaId;
 
   RespuestaOutput({
     required this.correcta,
     required this.nivelActual,
     required this.progreso,
     this.vidasRestantes,
+    this.siguientePreguntaId,
   });
 
   factory RespuestaOutput.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class RespuestaOutput {
       nivelActual: json['nivel_actual'],
       progreso: json['progreso'],
       vidasRestantes: json['vidas_restantes'],
+      siguientePreguntaId: json['siguiente_pregunta_id'],
     );
   }
 }

@@ -5,8 +5,8 @@ import '../models/usuario_activo.dart';
 import '../service/nivel_service.dart';
 import '../service/usuario_service.dart';
 
-class Tema3Page extends StatelessWidget {
-  const Tema3Page({super.key});
+class Tema2Page extends StatelessWidget {
+  const Tema2Page({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class Tema3Page extends StatelessWidget {
                     progreso: 0.0,
                     ramasEstado: [
                       RamaEstado(
-                        ramaId: 3,
-                        ramaNombre: 'Destock',
+                        ramaId: 2,
+                        ramaNombre: 'Redes',
                         nivelActual: 1,
                         progreso: 0.0,
                       ),
@@ -44,10 +44,10 @@ class Tema3Page extends StatelessWidget {
             UsuarioActivo.cargarDesdeEstado(estado);
 
             final rama = UsuarioActivo.ramasEstado.firstWhere(
-              (r) => r.ramaNombre.toLowerCase().contains('destock'),
+              (r) => r.ramaNombre.toLowerCase().contains('redes'),
               orElse: () => RamaEstado(
-                ramaId: 3,
-                ramaNombre: 'Destock',
+                ramaId: 2,
+                ramaNombre: 'Redes',
                 nivelActual: 1,
                 progreso: 0.0,
               ),
@@ -68,7 +68,6 @@ class Tema3Page extends StatelessWidget {
                 if (niveles.isEmpty) {
                   return const Center(child: Text('No hay niveles disponibles para esta rama'));
                 }
-
 
                 return Column(
                   children: [

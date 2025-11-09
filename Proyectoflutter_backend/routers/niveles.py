@@ -5,11 +5,66 @@ from models import Nivel, NivelDetalle
 router = APIRouter()
 
 # 🔹 Listar todos los niveles con puntos requeridos
-@router.get("/niveles", response_model=list[Nivel])
-def listar_niveles():
+@router.get("/", response_model=list[Nivel])
+def listar_niveles(rama_id: int = None, rama_nombre: str = None):
     cursor = conn.cursor()
-    cursor.execute("SELECT id, nombre, puntos_requeridos FROM niveles ORDER BY id")
-    niveles = cursor.fetchall()
+    niveles = []
+
+    # Priority: if rama_nombre provided, use it; else if rama_id provided, resolve its name.
+    if rama_nombre:
+        search_name = rama_nombre
+
+        # Buscamos niveles cuyo nombre incluya el nombre de la rama (case-insensitive)
+        cursor.execute('''
+            SELECT id, nombre, puntos_requeridos
+            FROM niveles
+            WHERE LOWER(nombre) LIKE '%' + LOWER(?) + '%'
+            ORDER BY id
+        ''', (search_name,))
+        niveles = cursor.fetchall()
+
+        # Si no encontramos niveles por nombre, intentamos buscar por preguntas
+        if not niveles:
+            cursor.execute('''
+                SELECT DISTINCT n.id, n.nombre, n.puntos_requeridos
+                FROM niveles n
+                JOIN preguntas p ON p.nivel_id = n.id
+                JOIN ramas r ON p.rama_id = r.id
+                WHERE LOWER(r.nombre) LIKE '%' + LOWER(?) + '%'
+                ORDER BY n.id
+            ''', (search_name,))
+            niveles = cursor.fetchall()
+
+    elif rama_id is None:
+        cursor.execute("SELECT id, nombre, puntos_requeridos FROM niveles ORDER BY id")
+        niveles = cursor.fetchall()
+    else:
+        # Resolve rama name and run same logic as rama_nombre
+        cursor.execute("SELECT nombre FROM ramas WHERE id = ?", (rama_id,))
+        rama_row = cursor.fetchone()
+        if not rama_row:
+            cursor.close()
+            raise HTTPException(status_code=404, detail="Rama no encontrada")
+        search_name = rama_row[0]
+
+        cursor.execute('''
+            SELECT id, nombre, puntos_requeridos
+            FROM niveles
+            WHERE LOWER(nombre) LIKE '%' + LOWER(?) + '%'
+            ORDER BY id
+        ''', (search_name,))
+        niveles = cursor.fetchall()
+
+        if not niveles:
+            cursor.execute('''
+                SELECT DISTINCT n.id, n.nombre, n.puntos_requeridos
+                FROM niveles n
+                JOIN preguntas p ON p.nivel_id = n.id
+                WHERE p.rama_id = ?
+                ORDER BY n.id
+            ''', (rama_id,))
+            niveles = cursor.fetchall()
+
     cursor.close()
 
     return [
@@ -17,8 +72,25 @@ def listar_niveles():
         for row in niveles
     ]
 
+
+@router.get('/rama/{rama_id}', response_model=list[Nivel])
+def listar_niveles_por_rama(rama_id: int):
+    cursor = conn.cursor()
+    # Devolvemos los niveles que tengan al menos una pregunta asociada a la rama indicada
+    cursor.execute('''
+        SELECT DISTINCT n.id, n.nombre, n.puntos_requeridos
+        FROM niveles n
+        JOIN preguntas p ON p.nivel_id = n.id
+        WHERE p.rama_id = ?
+        ORDER BY n.id
+    ''', (rama_id,))
+    niveles = cursor.fetchall()
+    cursor.close()
+
+    return [{"id": row[0], "nombre": row[1], "puntos": row[2]} for row in niveles]
+
 # 🔸 Obtener detalles enriquecidos de un nivel específico
-@router.get("/niveles/{nivel_id}", response_model=NivelDetalle)
+@router.get("/{nivel_id}", response_model=NivelDetalle)
 def obtener_nivel(nivel_id: int):
     cursor = conn.cursor()
 

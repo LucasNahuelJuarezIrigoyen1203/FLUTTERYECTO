@@ -4,17 +4,24 @@ from db import conn
 
 router = APIRouter()
 
-@router.get("/niveles/{nivel_id}/pregunta", response_model=PreguntaConOpciones)
-def obtener_pregunta_por_nivel(nivel_id: int):
+@router.get("/{nivel_id}/pregunta", response_model=PreguntaConOpciones)
+def obtener_pregunta_por_nivel(nivel_id: int, id: int = None):
     cursor = conn.cursor()
 
-    # 🔍 Buscar pregunta activa para el nivel
-    cursor.execute("""
-        SELECT TOP 1 id, texto
-        FROM preguntas
-        WHERE nivel_id = ? AND activo = 1
-        ORDER BY NEWID()
-    """, (nivel_id,))
+    # 🔍 Buscar pregunta específica o aleatoria del nivel
+    if id:
+        cursor.execute("""
+            SELECT id, texto
+            FROM preguntas
+            WHERE nivel_id = ? AND id = ? AND activo = 1
+        """, (nivel_id, id))
+    else:
+        cursor.execute("""
+            SELECT TOP 1 id, texto
+            FROM preguntas
+            WHERE nivel_id = ? AND activo = 1
+            ORDER BY NEWID()
+        """, (nivel_id,))
     pregunta = cursor.fetchone()
 
     if not pregunta:
@@ -26,7 +33,7 @@ def obtener_pregunta_por_nivel(nivel_id: int):
     # 🔍 Obtener opciones asociadas
     cursor.execute("""
         SELECT id, texto
-        FROM opciones
+        FROM respuestas
         WHERE pregunta_id = ?
         ORDER BY id
     """, (pregunta_id,))

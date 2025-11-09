@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/pagina_inicial.dart';
 import 'screens/aplicaciones_moviles.dart';
-import 'screens/s_o_y_redes.dart';
+import 'screens/redes.dart';
 import 'screens/destock.dart';
 import 'screens/pantalla_nivel.dart';
 
 void main() {
   runApp(const LoginApp());
-}
+}  
 
 class LoginApp extends StatelessWidget {
   const LoginApp({super.key});
@@ -26,28 +26,10 @@ class LoginApp extends StatelessWidget {
         '/tema2': (context) => const Tema2Page(),
         '/tema3': (context) => const Tema3Page(),
 
-        // Rutas dinámicas para niveles
-        '/nivel1_teoria': (context) {
-          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-          return PantallaNivel(
-            usuarioId: args['usuarioId'],
-            nivelId: 1,
-          );
-        },
-        '/nivel2_teoria': (context) {
-          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-          return PantallaNivel(
-            usuarioId: args['usuarioId'],
-            nivelId: 2,
-          );
-        },
-        '/nivel3_teoria': (context) {
-          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-          return PantallaNivel(
-            usuarioId: args['usuarioId'],
-            nivelId: 3,
-          );
-        },
+        // Rutas de niveles usando UsuarioActivo
+        '/nivel1_teoria': (context) => const PantallaNivel(nivelId: 1),
+        '/nivel2_teoria': (context) => const PantallaNivel(nivelId: 2),
+        '/nivel3_teoria': (context) => const PantallaNivel(nivelId: 3),
       },
     );
   }

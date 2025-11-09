@@ -13,10 +13,10 @@ class RamaEstado {
 
   factory RamaEstado.fromJson(Map<String, dynamic> json) {
     return RamaEstado(
-      ramaId: json['rama_id'],
-      ramaNombre: json['rama_nombre'],
-      nivelActual: json['nivel_actual'],
-      progreso: json['progreso'],
+      ramaId: json['rama_id'] ?? 0,
+      ramaNombre: json['rama_nombre'] ?? '',
+      nivelActual: json['nivel_actual'] ?? 1,
+      progreso: (json['progreso'] ?? 0.0).toDouble(),
     );
   }
 }
@@ -44,14 +44,14 @@ class UsuarioEstado {
 
   factory UsuarioEstado.fromJson(Map<String, dynamic> json) {
     return UsuarioEstado(
-      id: json['id'],
-      nombre: json['nombre'],
-      correo: json['correo'],
-      activo: json['activo'],
-      vidas: json['vidas'],
-      nivelActual: json['nivel_actual'],
-      progreso: json['progreso'],
-      ramasEstado: (json['ramas_estado'] as List)
+      id: json['id'] ?? 0,
+      nombre: json['nombre'] ?? '',
+      correo: json['correo'] ?? '',
+      activo: json['activo'] ?? true,
+      vidas: json['vidas'] ?? 5,
+      nivelActual: json['nivel_actual'] ?? 1,
+      progreso: (json['progreso'] ?? 0.0).toDouble(),
+      ramasEstado: (json['ramas_estado'] as List? ?? [])
           .map((r) => RamaEstado.fromJson(r))
           .toList(),
     );

@@ -11,6 +11,28 @@ Future<List<Nivel>> fetchNiveles() async {
   } else {
     throw Exception('Error al listar niveles');
   }
+} 
+
+Future<List<Nivel>> fetchNivelesPorRama(int ramaId) async {
+  final response = await http.get(Uri.parse('$baseUrl/niveles?rama_id=$ramaId'));
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body) as List;
+    return data.map((n) => Nivel.fromJson(n)).toList();
+  } else {
+    throw Exception('Error al listar niveles por rama');
+  }
+}
+
+// New: fetch niveles by rama name (safer when IDs may be inconsistent)
+Future<List<Nivel>> fetchNivelesPorRamaNombre(String ramaNombre) async {
+  final encoded = Uri.encodeQueryComponent(ramaNombre);
+  final response = await http.get(Uri.parse('$baseUrl/niveles?rama_nombre=$encoded'));
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body) as List;
+    return data.map((n) => Nivel.fromJson(n)).toList();
+  } else {
+    throw Exception('Error al listar niveles por rama (por nombre)');
+  }
 }
 
 Future<NivelDetalle> fetchNivelDetalle(int nivelId) async {

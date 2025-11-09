@@ -71,7 +71,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'nombre': nombre,
-          'usuario': usuario,
           'correo': correo,
           'contrasena': contrasena,
         }),

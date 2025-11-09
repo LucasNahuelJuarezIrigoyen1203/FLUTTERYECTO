@@ -5,69 +5,100 @@ import '../models/usuario_activo.dart';
 import '../service/nivel_service.dart';
 import '../service/usuario_service.dart';
 
-class AplicacionesMoviles extends StatelessWidget {
-  const AplicacionesMoviles({super.key});
+class AplicacionesMovilesPage extends StatelessWidget {
+  const AplicacionesMovilesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // 🔐 Redirigir si no hay sesión activa
+    if (UsuarioActivo.id == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/login');
+      });
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
-        child: FutureBuilder(
-          future: Future.wait([
-            fetchNiveles(),
-            fetchEstadoUsuario(UsuarioActivo.id),
-          ]),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+        child: FutureBuilder<UsuarioEstado>(
+          future: fetchEstadoUsuario(UsuarioActivo.id),
+          builder: (context, estadoSnapshot) {
+            if (estadoSnapshot.hasError) {
+              return Center(child: Text('Error al cargar estado: ${estadoSnapshot.error}'));
+            }
+
+            if (!estadoSnapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final niveles = snapshot.data![0] as List<Nivel>;
-            final estado = snapshot.data![1] as UsuarioEstado;
+            final estado = estadoSnapshot.data!;
 
-            UsuarioActivo.cargarDesdeEstado(estado);
+            // ⚠️ Evitar modificar estado dentro del builder
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              UsuarioActivo.cargarDesdeEstado(estado);
+            });
 
-            final rama = UsuarioActivo.ramasEstado.firstWhere(
+            final rama = estado.ramasEstado.firstWhere(
               (r) => r.ramaNombre == 'Aplicaciones Móviles',
               orElse: () => RamaEstado(
-                ramaId: 3,
+                ramaId: 1,
                 ramaNombre: 'Aplicaciones Móviles',
                 nivelActual: 1,
                 progreso: 0.0,
               ),
             );
 
-            return Column(
-              children: [
-                const SizedBox(height: 24),
-                Text(
-                  rama.ramaNombre,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.teal[700],
+            return FutureBuilder<List<Nivel>>(
+              future: fetchNivelesPorRamaNombre(rama.ramaNombre),
+              builder: (context, nivelesSnapshot) {
+                if (nivelesSnapshot.hasError) {
+                  return Center(child: Text('Error al cargar niveles: ${nivelesSnapshot.error}'));
+                }
+
+                if (!nivelesSnapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final niveles = nivelesSnapshot.data!;
+                if (niveles.isEmpty) {
+                  return const Center(child: Text('No hay niveles disponibles para esta rama'));
+                }
+
+                return Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    Text(
+                      rama.ramaNombre,
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.teal[700],
+                          ),
+                    ),
+                    const SizedBox(height: 32),
+                    Expanded(
+                      child: ListView(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        children: niveles.map((nivel) {
+                          final desbloqueado = nivel.id <= rama.nivelActual;
+                          return NivelCard(
+                            nivel: nivel.nombre,
+                            icon: desbloqueado ? Icons.play_circle_fill : Icons.lock,
+                            color: desbloqueado ? Colors.green : Colors.grey,
+                            stars: desbloqueado ? 3 : 0,
+                            locked: !desbloqueado,
+                            onTap: () {
+                              Navigator.pushNamed(context, '/nivel${nivel.id}_teoria');
+                            },
+                          );
+                        }).toList(),
                       ),
-                ),
-                const SizedBox(height: 32),
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    children: niveles.map((nivel) {
-                      final desbloqueado = nivel.id <= rama.nivelActual;
-                      return NivelCard(
-                        nivel: nivel.nombre,
-                        icon: desbloqueado ? Icons.play_circle_fill : Icons.lock,
-                        color: desbloqueado ? Colors.green : Colors.grey,
-                        stars: desbloqueado ? 3 : 0,
-                        locked: !desbloqueado,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/nivel${nivel.id}_teoria');
-                        },
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),
@@ -97,7 +128,6 @@ class AplicacionesMoviles extends StatelessWidget {
   }
 }
 
-// Widget para cada nivel
 class NivelCard extends StatelessWidget {
   final String nivel;
   final IconData icon;

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'registro_screen.dart';
 import '../config.dart';
-import '../widgets/corner_animals.dart'; // Asegurate de importar tu widget
+import '../widgets/corner_animals.dart';
 import '../models/usuario_activo.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -37,11 +37,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+
+        // ✅ Cargar todos los datos del usuario
+        UsuarioActivo.id = data['id'];
         UsuarioActivo.nombre = data['nombre'];
         UsuarioActivo.correo = data['correo'];
+        UsuarioActivo.nivelActual = data['nivelActual'] ?? 1;
+        UsuarioActivo.progreso = (data['progreso'] ?? 0).toDouble();
+        UsuarioActivo.vidas = data['vidas'] ?? 5;
+        // Si tenés ramasEstado, podés mapearlas también
+
         _mostrarMensaje(
-          '¡Bienvenido a khroma, un gusto recibirte ${data['nombre']}! 🎉',
+          '¡Bienvenido a Khroma, un gusto recibirte ${data['nombre']}! 🎉',
         );
+
         Navigator.pushReplacementNamed(context, '/paginainicial');
       } else {
         _mostrarMensaje('Login fallido: ${response.body} ❌');
@@ -54,9 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _mostrarMensaje(String mensaje) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(mensaje)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mensaje)));
   }
 
   @override
@@ -65,10 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: const Color(0xFFA1CDC4),
       body: Stack(
         children: [
-          const CornerAnimals(
-            padding: 0,
-            size: 200,
-          ), // 🐾 Animalitos decorativos
+          const CornerAnimals(padding: 0, size: 200),
           Center(
             child: Container(
               padding: const EdgeInsets.all(24),
@@ -110,10 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.teal[400],
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 12,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                     ),
                     child: const Text('Ingresar'),
                   ),
@@ -122,17 +123,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegistroScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => const RegistroScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.teal[200],
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 12,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                     ),
                     child: const Text('Registrarse'),
                   ),
