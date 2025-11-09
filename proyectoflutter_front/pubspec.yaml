@@ -32,3 +32,6 @@ flutter:
     - assets/images/corazon_normal.gif
     - assets/images/corazon_recuperado.gif
     - assets/images/corazon_roto.gif
+    - assets/images/fondo_cuervo.png
+    - assets/images/fondo_ballena.png
+    - assets/images/fondo_panda.png

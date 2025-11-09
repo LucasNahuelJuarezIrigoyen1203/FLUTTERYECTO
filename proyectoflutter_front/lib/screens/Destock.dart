@@ -4,15 +4,16 @@ import '../models/usuario_estado.dart';
 import '../models/usuario_activo.dart';
 import '../service/nivel_service.dart';
 import '../service/usuario_service.dart';
+import '../widgets/parafondo.dart';
 
 class Tema3Page extends StatelessWidget {
   const Tema3Page({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
-      body: SafeArea(
+    return BackgroundScaffold(
+      backgroundImage: 'assets/images/fondo_ballena.png',
+      overlayOpacity: 0.35,
         child: FutureBuilder<UsuarioEstado>(
           future: UsuarioActivo.id != 0
               ? fetchEstadoUsuario(UsuarioActivo.id)
@@ -105,7 +106,6 @@ class Tema3Page extends StatelessWidget {
             );
           },
         ),
-      ),
 
       // Footer
       bottomNavigationBar: BottomNavigationBar(

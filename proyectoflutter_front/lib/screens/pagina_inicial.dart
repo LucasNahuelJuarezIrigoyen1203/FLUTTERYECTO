@@ -139,11 +139,12 @@ class _TemaCardState extends State<TemaCard> {
                   Center(
                     child: Text(
                       widget.title,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: const Color.fromARGB(255, 248, 157, 97),
-                            fontWeight: FontWeight.bold,
-                            shadows: [
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1.0,
+                        shadows: [
                               Shadow(
                                 offset: const Offset(1, 1),
                                 blurRadius: 4,

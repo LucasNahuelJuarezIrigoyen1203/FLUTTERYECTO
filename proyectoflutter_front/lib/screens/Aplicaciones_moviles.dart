@@ -4,6 +4,7 @@ import '../models/usuario_estado.dart';
 import '../models/usuario_activo.dart';
 import '../service/nivel_service.dart';
 import '../service/usuario_service.dart';
+import '../widgets/parafondo.dart';
 
 class AplicacionesMovilesPage extends StatelessWidget {
   const AplicacionesMovilesPage({super.key});
@@ -20,9 +21,9 @@ class AplicacionesMovilesPage extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
-      body: SafeArea(
+    return BackgroundScaffold(
+      backgroundImage: 'assets/images/fondo_cuervo.png',
+      overlayOpacity: 0.35,
         child: FutureBuilder<UsuarioEstado>(
           future: fetchEstadoUsuario(UsuarioActivo.id),
           builder: (context, estadoSnapshot) {
@@ -102,7 +103,6 @@ class AplicacionesMovilesPage extends StatelessWidget {
             );
           },
         ),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1,
         onTap: (index) {
