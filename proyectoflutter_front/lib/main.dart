@@ -4,11 +4,11 @@ import 'screens/pagina_inicial.dart';
 import 'screens/aplicaciones_moviles.dart';
 import 'screens/redes.dart';
 import 'screens/destock.dart';
-import 'screens/pantalla_nivel.dart';
 
 void main() {
+  // 🔒 Limpia cualquier estado previo al iniciar la app
   runApp(const LoginApp());
-}  
+}
 
 class LoginApp extends StatelessWidget {
   const LoginApp({super.key});
@@ -18,6 +18,7 @@ class LoginApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mi App Flutter',
       debugShowCheckedModeBanner: false,
+      // 🚪 Siempre arranca en login
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginScreen(),
@@ -25,11 +26,6 @@ class LoginApp extends StatelessWidget {
         '/tema1': (context) => const AplicacionesMovilesPage(),
         '/tema2': (context) => const Tema2Page(),
         '/tema3': (context) => const Tema3Page(),
-
-        // Rutas de niveles usando UsuarioActivo
-        '/nivel1_teoria': (context) => const PantallaNivel(nivelId: 1),
-        '/nivel2_teoria': (context) => const PantallaNivel(nivelId: 2),
-        '/nivel3_teoria': (context) => const PantallaNivel(nivelId: 3),
       },
     );
   }

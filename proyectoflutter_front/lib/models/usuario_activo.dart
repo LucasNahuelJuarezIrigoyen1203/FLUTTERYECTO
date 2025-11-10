@@ -1,6 +1,8 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'usuario_estado.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+/// Clase que mantiene en memoria los datos del usuario activo.
+/// Puede guardar y recuperar la sesión en disco usando SharedPreferences.
 class UsuarioActivo {
   static int id = 0;
   static String nombre = '';
@@ -24,7 +26,21 @@ class UsuarioActivo {
     ramasEstado = estado.ramasEstado;
   }
 
-  /// Guarda los datos en SharedPreferences
+  /// Limpia todos los datos (logout)
+  static Future<void> logout() async {
+    id = 0;
+    nombre = '';
+    correo = '';
+    nivelActual = 1;
+    progreso = 0.0;
+    vidas = 5;
+    ramasEstado = [];
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
+  /// Guarda los datos actuales en disco
   static Future<void> guardarEnLocal() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('usuario_id', id);
@@ -33,10 +49,10 @@ class UsuarioActivo {
     await prefs.setInt('usuario_nivel', nivelActual);
     await prefs.setDouble('usuario_progreso', progreso);
     await prefs.setInt('usuario_vidas', vidas);
-    // ramasEstado no se guarda aquí por simplicidad (podés serializar si querés)
+    // ramasEstado se puede guardar como JSON si lo necesitás
   }
 
-  /// Recupera los datos desde SharedPreferences
+  /// Carga los datos guardados en disco
   static Future<void> cargarDesdeLocal() async {
     final prefs = await SharedPreferences.getInstance();
     id = prefs.getInt('usuario_id') ?? 0;
@@ -45,19 +61,6 @@ class UsuarioActivo {
     nivelActual = prefs.getInt('usuario_nivel') ?? 1;
     progreso = prefs.getDouble('usuario_progreso') ?? 0.0;
     vidas = prefs.getInt('usuario_vidas') ?? 5;
-    ramasEstado = []; // Podés cargar desde JSON si lo guardás
-  }
-
-  /// Limpia todos los datos (logout)
-  static Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    id = 0;
-    nombre = '';
-    correo = '';
-    nivelActual = 1;
-    progreso = 0.0;
-    vidas = 5;
-    ramasEstado = [];
+    ramasEstado = []; // podés deserializar si guardás las ramas en JSON
   }
 }

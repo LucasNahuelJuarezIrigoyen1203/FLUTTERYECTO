@@ -56,4 +56,23 @@ class UsuarioEstado {
           .toList(),
     );
   }
+
+  /// Método copyWith para crear una copia modificada del estado
+  UsuarioEstado copyWith({
+    int? vidas,
+    int? nivelActual,
+    double? progreso,
+    List<RamaEstado>? ramasEstado,
+  }) {
+    return UsuarioEstado(
+      id: id,
+      nombre: nombre,
+      correo: correo,
+      activo: activo,
+      vidas: vidas ?? this.vidas,
+      nivelActual: nivelActual ?? this.nivelActual,
+      progreso: progreso ?? this.progreso,
+      ramasEstado: ramasEstado ?? this.ramasEstado,
+    );
+  }
 }

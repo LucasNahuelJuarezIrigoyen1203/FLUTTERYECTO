@@ -5,6 +5,7 @@ import 'registro_screen.dart';
 import '../config.dart';
 import '../widgets/corner_animals.dart';
 import '../models/usuario_activo.dart';
+import '../models/usuario_estado.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -38,19 +39,17 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        // ✅ Cargar todos los datos del usuario
-        UsuarioActivo.id = data['id'];
-        UsuarioActivo.nombre = data['nombre'];
-        UsuarioActivo.correo = data['correo'];
-        UsuarioActivo.nivelActual = data['nivelActual'] ?? 1;
-        UsuarioActivo.progreso = (data['progreso'] ?? 0).toDouble();
-        UsuarioActivo.vidas = data['vidas'] ?? 5;
-        // Si tenés ramasEstado, podés mapearlas también
+        // ✅ Convertir la respuesta en UsuarioEstado
+        final estado = UsuarioEstado.fromJson(data);
+
+        // ✅ Guardar en UsuarioActivo
+        UsuarioActivo.cargarDesdeEstado(estado);
 
         _mostrarMensaje(
-          '¡Bienvenido a Khroma, un gusto recibirte ${data['nombre']}! 🎉',
+          '¡Bienvenido a Khroma, un gusto recibirte ${estado.nombre}! 🎉',
         );
 
+        // 🚀 Ir a la página inicial
         Navigator.pushReplacementNamed(context, '/paginainicial');
       } else {
         _mostrarMensaje('Login fallido: ${response.body} ❌');

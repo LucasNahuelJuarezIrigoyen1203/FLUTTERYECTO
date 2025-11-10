@@ -14,8 +14,6 @@ class UsuarioScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final usuarioId = UsuarioActivo.id;
-
     return Scaffold(
       backgroundColor: const Color(0xFFA1CDC4),
       appBar: AppBar(
@@ -55,10 +53,24 @@ class UsuarioScreen extends StatelessWidget {
                 correo,
                 style: TextStyle(fontSize: 16, color: Colors.grey[700]),
               ),
-              const SizedBox(height: 16),
-              Text(
-                'ID de usuario: $usuarioId',
-                style: const TextStyle(fontSize: 14, color: Colors.black54),
+              const SizedBox(height: 24),
+
+              // 🔑 Botón de cerrar sesión
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal[400],
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  UsuarioActivo.logout(); // limpia datos en memoria
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                child: const Text('Cerrar sesión'),
               ),
             ],
           ),
