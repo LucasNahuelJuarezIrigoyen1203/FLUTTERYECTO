@@ -35,3 +35,19 @@ flutter:
     - assets/images/fondo_cuervo.png
     - assets/images/fondo_ballena.png
     - assets/images/fondo_panda.png
+    - assets/images/ballena_azul.png
+    - assets/images/ballena_gris.png
+    - assets/images/ballena_morada.png
+    - assets/images/ballena_rosa.png
+    - assets/images/cuervo_azul.png
+    - assets/images/cuervo_gris.png
+    - assets/images/cuervo_rosa.png
+    - assets/images/cuervo_verde.png
+    - assets/images/gato_azul.png
+    - assets/images/gato_purpura.png
+    - assets/images/gato_rosa.png
+    - assets/images/gato_verde.png
+    - assets/images/panda_azul.png
+    - assets/images/panda_gris.png
+    - assets/images/panda_rosa.png
+    - assets/images/panda_verde.png
