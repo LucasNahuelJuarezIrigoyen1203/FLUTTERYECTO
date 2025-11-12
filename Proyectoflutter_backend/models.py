@@ -1,6 +1,6 @@
 from __future__ import annotations
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 # 🧍 Base para usuario
@@ -123,10 +123,23 @@ class RamaEstado(BaseModel):
     activo: Optional[bool] = True
     vidas: Optional[int] = 5
 
-# 🧍 Estado completo del usuario
-class EstadoUsuarioResponse(BaseModel):
-    vidas: int
-    ramas_estado: list[RamaEstado]
+    
+# 🐾 Mascota y estado de usuario
+class Mascota(BaseModel):
+    id: int
+    nombre: str
+    imagen: str
 
-class UsuarioEstadoResponse(UsuarioResponse):
-    ramas_estado: list[RamaEstado]
+class RamaEstado(BaseModel):
+    rama_id: int
+    rama_nombre: str
+    nivel_actual: int
+    progreso: float
+
+class EstadoUsuarioResponse(BaseModel):
+    usuario_id: int
+    nombre: str
+    correo: str
+    vidas: int
+    mascota_activa: Optional[Mascota]
+    ramas_estado: List[RamaEstado]
