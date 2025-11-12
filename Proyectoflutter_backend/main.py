@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import usuarios_crudp, login, vidas_crudp, respuestas, preguntas, niveles, estado_usuario, ramas
+from routers import usuarios_crudp, login, vidas_crudp, respuestas, preguntas, niveles, estado_usuario,ramas, masctotas
+
 
 app = FastAPI(
     title="COSO DEL COSITO DEL COSO",
@@ -32,3 +33,4 @@ app.include_router(vidas_crudp.router)
 app.include_router(preguntas.router, prefix="/niveles", tags=["Preguntas"])
 app.include_router(estado_usuario.router, prefix="/estado_usuario", tags=["Estado Usuario"])
 app.include_router(ramas.router)
+app.include_router(mascotas.router, prefix="/mascotas")

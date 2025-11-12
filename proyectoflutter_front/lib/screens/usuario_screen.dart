@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/usuario_activo.dart';
+import '../service/usuario_service.dart'; // ✅ para llamar al backend
 
 class UsuarioScreen extends StatefulWidget {
   final String nombre;
@@ -17,30 +18,68 @@ class UsuarioScreen extends StatefulWidget {
 
 class _UsuarioScreenState extends State<UsuarioScreen> {
   final List<String> avatares = [
-     'assets/images/ballena_azul.png',
-     'assets/images/ballena_gris.png',
-     'assets/images/ballena_morada.png',
-     'assets/images/ballena_rosa.png',
-     'assets/images/cuervo_azul.png',
-     'assets/images/cuervo_gris.png',
-     'assets/images/cuervo_rosa.png',
-     'assets/images/cuervo_verde.png',
-     'assets/images/gato_azul.png',
-     'assets/images/gato_purpura.png',
-     'assets/images/gato_rosa.png',
-     'assets/images/gato_verde.png',
-     'assets/images/panda_azul.png',
-     'assets/images/panda_gris.png',
-     'assets/images/panda_rosa.png',
-     'assets/images/panda_verde.png',
+    'assets/images/ballena_azul.png',
+    'assets/images/ballena_gris.png',
+    'assets/images/ballena_morada.png',
+    'assets/images/ballena_rosa.png',
+    'assets/images/cuervo_azul.png',
+    'assets/images/cuervo_gris.png',
+    'assets/images/cuervo_rosa.png',
+    'assets/images/cuervo_verde.png',
+    'assets/images/gato_azul.png',
+    'assets/images/gato_purpura.png',
+    'assets/images/gato_rosa.png',
+    'assets/images/gato_verde.png',
+    'assets/images/panda_azul.png',
+    'assets/images/panda_gris.png',
+    'assets/images/panda_rosa.png',
+    'assets/images/panda_verde.png',
+    'assets/images/panda.png',
+    'assets/images/gato.png',
+    'assets/images/cuervo.png',
+    'assets/images/ballena.png',
+  ];
+
+  // ✅ Lista paralela con los nombres de las mascotas
+  final List<String> nombresMascotas = [
+    'Ballena Azul',
+    'Ballena Gris',
+    'Ballena Morada',
+    'Ballena Rosa',
+    'Cuervo Azul',
+    'Cuervo Gris',
+    'Cuervo Rosa',
+    'Cuervo Verde',
+    'Gato Azul',
+    'Gato Púrpura',
+    'Gato Rosa',
+    'Gato Verde',
+    'Panda Azul',
+    'Panda Gris',
+    'Panda Rosa',
+    'Panda Verde',
+    'Panda',
+    'Gato',
+    'Cuervo',
+    'Ballena',
   ];
 
   int avatarIndex = 0;
 
-  void cambiarAvatar() {
+  // ✅ Cambiar avatar y sincronizar con backend
+  void cambiarAvatar() async {
     setState(() {
       avatarIndex = (avatarIndex + 1) % avatares.length;
     });
+
+    final nombreMascota = nombresMascotas[avatarIndex];
+
+    try {
+      await actualizarMascotaPorNombre(UsuarioActivo.id, nombreMascota);
+      print('Mascota actualizada a: $nombreMascota');
+    } catch (e) {
+      print('Error al actualizar mascota: $e');
+    }
   }
 
   @override
@@ -82,6 +121,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  // ✅ Mostrar nombre del usuario
                   Text(
                     widget.nombre,
                     style: TextStyle(
@@ -91,9 +131,16 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
+                  // ✅ Mostrar correo
                   Text(
                     widget.correo,
                     style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                  ),
+                  const SizedBox(height: 8),
+                  // ✅ Mostrar nombre de la mascota activa
+                  Text(
+                    nombresMascotas[avatarIndex],
+                    style: TextStyle(fontSize: 16, color: Colors.teal[600]),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
