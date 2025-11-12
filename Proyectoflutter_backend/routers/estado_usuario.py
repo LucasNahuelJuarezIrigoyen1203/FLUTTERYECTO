@@ -8,11 +8,26 @@ router = APIRouter()
 def obtener_estado_usuario(id: int):
     cursor = conn.cursor()
 
-    # 🔍 Verificar existencia del usuario
-    cursor.execute("SELECT 1 FROM usuarios WHERE id = ?", (id,))
-    if not cursor.fetchone():
+    # 🔍 Verificar existencia del usuario y obtener datos base + mascota activa
+    cursor.execute("""
+        SELECT u.id, u.nombre, u.correo, m.id, m.nombre, m.imagen
+        FROM usuarios u
+        LEFT JOIN mascotas m ON u.mascota_activa_id = m.id
+        WHERE u.id = ?
+    """, (id,))
+    row = cursor.fetchone()
+    if not row:
         cursor.close()
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    usuario_id, nombre, correo, mascota_id, mascota_nombre, mascota_imagen = row
+    mascota_activa = None
+    if mascota_id:
+        mascota_activa = {
+            "id": mascota_id,
+            "nombre": mascota_nombre,
+            "imagen": mascota_imagen
+        }
 
     # 🧠 Obtener vidas actuales
     cursor.execute("""
@@ -22,7 +37,7 @@ def obtener_estado_usuario(id: int):
         ORDER BY updated_at DESC
     """, (id,))
     vidas_row = cursor.fetchone()
-    vidas = vidas_row[0] if vidas_row else 5  # valor por defecto
+    vidas = vidas_row[0] if vidas_row else 5
 
     # 📊 Obtener estado por rama
     cursor.execute("""
@@ -46,4 +61,11 @@ def obtener_estado_usuario(id: int):
         ))
 
     cursor.close()
-    return EstadoUsuarioResponse(vidas=vidas, ramas_estado=ramas_estado)
+    return EstadoUsuarioResponse(
+        usuario_id=usuario_id,
+        nombre=nombre,
+        correo=correo,
+        vidas=vidas,
+        mascota_activa=mascota_activa,
+        ramas_estado=ramas_estado
+    )
