@@ -6,6 +6,7 @@ import '../service/nivel_service.dart';
 import '../service/usuario_service.dart';
 import '../widgets/parafondo.dart';
 import 'pantalla_nivel.dart';
+import '../models/rama_estado.dart';
 
 class Tema3Page extends StatelessWidget {
   const Tema3Page({super.key});
@@ -35,6 +36,7 @@ class Tema3Page extends StatelessWidget {
                       progreso: 0.0,
                     ),
                   ],
+                  mascotaActiva: null, // ✅ agregado para evitar error
                 ),
               ),
         builder: (context, estadoSnapshot) {
@@ -59,7 +61,9 @@ class Tema3Page extends StatelessWidget {
             future: fetchNivelesPorRamaNombre(rama.ramaNombre),
             builder: (context, nivelesSnapshot) {
               if (nivelesSnapshot.hasError) {
-                return Center(child: Text('Error al cargar niveles: ${nivelesSnapshot.error}'));
+                return Center(
+                  child: Text('Error al cargar niveles: ${nivelesSnapshot.error}'),
+                );
               }
 
               if (!nivelesSnapshot.hasData) {
@@ -68,7 +72,9 @@ class Tema3Page extends StatelessWidget {
 
               final niveles = nivelesSnapshot.data!;
               if (niveles.isEmpty) {
-                return const Center(child: Text('No hay niveles disponibles para esta rama'));
+                return const Center(
+                  child: Text('No hay niveles disponibles para esta rama'),
+                );
               }
 
               return Column(
@@ -117,8 +123,6 @@ class Tema3Page extends StatelessWidget {
           );
         },
       ),
-
-      // Footer
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1,
         onTap: (index) {
@@ -153,7 +157,6 @@ class Tema3Page extends StatelessWidget {
   }
 }
 
-// Widget para cada nivel
 class NivelCard extends StatelessWidget {
   final String nivel;
   final IconData icon;

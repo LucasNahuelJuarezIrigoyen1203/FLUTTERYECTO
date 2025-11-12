@@ -1,25 +1,5 @@
-class RamaEstado {
-  final int ramaId;
-  final String ramaNombre;
-  final int nivelActual;
-  final double progreso;
-
-  RamaEstado({
-    required this.ramaId,
-    required this.ramaNombre,
-    required this.nivelActual,
-    required this.progreso,
-  });
-
-  factory RamaEstado.fromJson(Map<String, dynamic> json) {
-    return RamaEstado(
-      ramaId: json['rama_id'] ?? 0,
-      ramaNombre: json['rama_nombre'] ?? '',
-      nivelActual: json['nivel_actual'] ?? 1,
-      progreso: (json['progreso'] ?? 0.0).toDouble(),
-    );
-  }
-}
+import 'rama_estado.dart';
+import 'mascota.dart';
 
 class UsuarioEstado {
   final int id;
@@ -30,6 +10,7 @@ class UsuarioEstado {
   final int nivelActual;
   final double progreso;
   final List<RamaEstado> ramasEstado;
+  final Mascota? mascotaActiva; // 👈 nuevo campo
 
   UsuarioEstado({
     required this.id,
@@ -40,11 +21,12 @@ class UsuarioEstado {
     required this.nivelActual,
     required this.progreso,
     required this.ramasEstado,
+    required this.mascotaActiva,
   });
 
   factory UsuarioEstado.fromJson(Map<String, dynamic> json) {
     return UsuarioEstado(
-      id: json['id'] ?? 0,
+      id: json['usuario_id'] ?? json['id'] ?? 0,
       nombre: json['nombre'] ?? '',
       correo: json['correo'] ?? '',
       activo: json['activo'] ?? true,
@@ -54,15 +36,18 @@ class UsuarioEstado {
       ramasEstado: (json['ramas_estado'] as List? ?? [])
           .map((r) => RamaEstado.fromJson(r))
           .toList(),
+      mascotaActiva: json['mascota_activa'] != null
+          ? Mascota.fromJson(json['mascota_activa'])
+          : null,
     );
   }
 
-  /// Método copyWith para crear una copia modificada del estado
   UsuarioEstado copyWith({
     int? vidas,
     int? nivelActual,
     double? progreso,
     List<RamaEstado>? ramasEstado,
+    Mascota? mascotaActiva,
   }) {
     return UsuarioEstado(
       id: id,
@@ -73,6 +58,7 @@ class UsuarioEstado {
       nivelActual: nivelActual ?? this.nivelActual,
       progreso: progreso ?? this.progreso,
       ramasEstado: ramasEstado ?? this.ramasEstado,
+      mascotaActiva: mascotaActiva ?? this.mascotaActiva,
     );
   }
 }

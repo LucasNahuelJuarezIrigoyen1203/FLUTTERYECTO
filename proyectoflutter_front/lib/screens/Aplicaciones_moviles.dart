@@ -3,6 +3,7 @@ import '../models/models.dart';
 import '../models/usuario_estado.dart';
 import '../models/usuario_activo.dart';
 import '../service/nivel_service.dart';
+import '../models/rama_estado.dart';
 import '../service/usuario_service.dart';
 import '../widgets/parafondo.dart';
 import 'pantalla_nivel.dart';
@@ -19,7 +20,9 @@ class AplicacionesMovilesPage extends StatelessWidget {
         future: fetchEstadoUsuario(UsuarioActivo.id),
         builder: (context, estadoSnapshot) {
           if (estadoSnapshot.hasError) {
-            return Center(child: Text('Error al cargar estado: ${estadoSnapshot.error}'));
+            return Center(
+              child: Text('Error al cargar estado: ${estadoSnapshot.error}'),
+            );
           }
 
           if (!estadoSnapshot.hasData) {
@@ -28,10 +31,11 @@ class AplicacionesMovilesPage extends StatelessWidget {
 
           final estado = estadoSnapshot.data!;
 
-          print('UsuarioActivo.id=${UsuarioActivo.id}, estado.id=${estado.id}, nombre=${estado.nombre}');
+          print(
+              'UsuarioActivo.id=${UsuarioActivo.id}, estado.id=${estado.id}, nombre=${estado.nombre}');
 
           // 🔐 Redirigir si el estado es inválido
-          if (UsuarioActivo.id == 0) {
+          if (estado.id == 0) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacementNamed(context, '/login');
             });
@@ -41,10 +45,13 @@ class AplicacionesMovilesPage extends StatelessWidget {
           // ✅ Cargar en memoria
           WidgetsBinding.instance.addPostFrameCallback((_) {
             UsuarioActivo.cargarDesdeEstado(estado);
+            print(
+                'UsuarioActivo cargado: id=${UsuarioActivo.id}, mascota=${UsuarioActivo.mascotaActiva?.nombre}');
           });
 
+          // 📊 Buscar rama "Aplicaciones Móviles"
           final rama = estado.ramasEstado.firstWhere(
-            (r) => r.ramaNombre == 'Aplicaciones Móviles',
+            (r) => r.ramaNombre.toLowerCase().contains('aplicaciones'),
             orElse: () => RamaEstado(
               ramaId: 1,
               ramaNombre: 'Aplicaciones Móviles',
@@ -57,7 +64,10 @@ class AplicacionesMovilesPage extends StatelessWidget {
             future: fetchNivelesPorRamaNombre(rama.ramaNombre),
             builder: (context, nivelesSnapshot) {
               if (nivelesSnapshot.hasError) {
-                return Center(child: Text('Error al cargar niveles: ${nivelesSnapshot.error}'));
+                return Center(
+                  child: Text(
+                      'Error al cargar niveles: ${nivelesSnapshot.error}'),
+                );
               }
 
               if (!nivelesSnapshot.hasData) {
@@ -66,7 +76,9 @@ class AplicacionesMovilesPage extends StatelessWidget {
 
               final niveles = nivelesSnapshot.data!;
               if (niveles.isEmpty) {
-                return const Center(child: Text('No hay niveles disponibles para esta rama'));
+                return const Center(
+                  child: Text('No hay niveles disponibles para esta rama'),
+                );
               }
 
               return Column(
@@ -87,7 +99,9 @@ class AplicacionesMovilesPage extends StatelessWidget {
                         final desbloqueado = nivel.id <= rama.nivelActual;
                         return NivelCard(
                           nivel: nivel.nombre,
-                          icon: desbloqueado ? Icons.play_circle_fill : Icons.lock,
+                          icon: desbloqueado
+                              ? Icons.play_circle_fill
+                              : Icons.lock,
                           color: desbloqueado ? Colors.green : Colors.grey,
                           stars: desbloqueado ? 3 : 0,
                           locked: !desbloqueado,
@@ -131,7 +145,8 @@ class AplicacionesMovilesPage extends StatelessWidget {
           }
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: 'Logros'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.emoji_events), label: 'Logros'),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
@@ -174,11 +189,13 @@ class NivelCard extends StatelessWidget {
         subtitle: Row(
           children: List.generate(
             stars,
-            (index) => const Icon(Icons.star, size: 20, color: Colors.black87),
+            (index) =>
+                const Icon(Icons.star, size: 20, color: Colors.black87),
           ),
         ),
         trailing: locked
-            ? const Icon(Icons.lock_outline, color: Color.fromARGB(255, 175, 175, 175))
+            ? const Icon(Icons.lock_outline,
+                color: Color.fromARGB(255, 175, 175, 175))
             : const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: locked ? null : onTap,
       ),
