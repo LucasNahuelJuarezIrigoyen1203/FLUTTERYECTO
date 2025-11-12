@@ -101,3 +101,16 @@ Future<void> actualizarMascotaActiva(int usuarioId, int mascotaId) async {
     throw Exception('Error al actualizar mascota: ${response.body}');
   }
 }
+
+Future<void> actualizarMascotaPorNombre(int usuarioId, String nombreMascota) async {
+  final response = await http.post(
+    Uri.parse('$baseUrl/usuarios/$usuarioId/mascota_por_nombre'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({'nombre': nombreMascota}),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Error al actualizar mascota por nombre: ${response.body}');
+  }
+}
+
