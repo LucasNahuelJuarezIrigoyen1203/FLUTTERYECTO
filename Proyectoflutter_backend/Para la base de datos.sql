@@ -16,6 +16,8 @@ CREATE TABLE usuarios (
     activo BIT DEFAULT 1,
     created_at DATETIME NOT NULL DEFAULT GETDATE(),
     updated_at DATETIME NULL
+    mascota_activa_id INT NULL FOREIGN KEY REFERENCES mascotas(id);
+
 );
 
 -- Tabla de ramas
