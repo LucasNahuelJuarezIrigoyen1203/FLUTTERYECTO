@@ -10,7 +10,7 @@ ENTORNO = os.getenv("ENTORNO", "local")
 if ENTORNO == "local":
     CONNECTION_STRING = (
         "DRIVER={ODBC Driver 17 for SQL Server};"
-        "SERVER=localhost;"
+        "SERVER=localhost\\SQLEXPRESS01;"
         "DATABASE=Proyectoflutter;"
         "Trusted_Connection=yes;"
     )

@@ -13,11 +13,11 @@ String fondoPorRama(String ramaNombre) {
       return 'assets/images/fondo_cuervo.png';
     case 'redes':
     case 'redes y comunicaciones':
-      return 'assets/images/fondo_redes.png';
+      return 'assets/images/fondo_panda.png';
     case 'desktop':
     case 'destock':
     case 'escritorio':
-      return 'assets/images/fondo_desktop.png';
+      return 'assets/images/fondo_ballena.png';
     default:
       return 'assets/images/fondo_default.png';
   }
@@ -40,7 +40,8 @@ class PantallaNivel extends StatefulWidget {
 }
 
 class _PantallaNivelState extends State<PantallaNivel> {
-  late UsuarioEstado usuarioEstado; // copia local que iremos actualizando con copyWith
+  late UsuarioEstado
+  usuarioEstado; // copia local que iremos actualizando con copyWith
   Pregunta? pregunta;
   bool cargando = true;
 
@@ -118,101 +119,110 @@ class _PantallaNivelState extends State<PantallaNivel> {
         child: cargando
             ? const Center(child: CircularProgressIndicator())
             : pregunta == null
-                ? const Center(child: Text('No hay preguntas disponibles'))
-                : Column(
-                    children: [
-                      const SizedBox(height: 16),
-                      // Encabezado con nombre de la rama
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            widget.ramaNombre,
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Vidas
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(totalVidas, (index) {
-                          final viva = index < usuarioEstado.vidas;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Image.asset(
-                              viva
-                                  ? 'assets/images/corazon_normal.gif'
-                                  : 'assets/images/corazon_roto.gif',
-                              height: 40,
-                              width: 40,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(
-                                  viva ? Icons.favorite : Icons.favorite_border,
-                                  color: viva ? Colors.red : Colors.grey,
-                                  size: 40,
-                                );
-                              },
+            ? const Center(child: Text('No hay preguntas disponibles'))
+            : Column(
+                children: [
+                  const SizedBox(height: 16),
+                  // Encabezado con nombre de la rama
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        widget.ramaNombre,
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                        }),
                       ),
-                      const SizedBox(height: 24),
-                      // Pregunta
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.10),
-                                blurRadius: 6,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Text(
-                            pregunta!.texto,
-                            style: const TextStyle(fontSize: 18, color: Colors.black87),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      // Opciones
-                      Expanded(
-                        child: ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                          children: pregunta!.opciones.map((opcion) {
-                            return OpcionButton(
-                              texto: opcion.texto,
-                              onTap: () => responder(opcion.id),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      // Progreso
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: LinearProgressIndicator(
-                            value: usuarioEstado.progreso,
-                            minHeight: 12,
-                            backgroundColor: Colors.white.withOpacity(0.6),
-                            valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
+                  const SizedBox(height: 8),
+                  // Vidas
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(totalVidas, (index) {
+                      final viva = index < usuarioEstado.vidas;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Image.asset(
+                          viva
+                              ? 'assets/images/corazon_normal.gif'
+                              : 'assets/images/corazon_roto.gif',
+                          height: 40,
+                          width: 40,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              viva ? Icons.favorite : Icons.favorite_border,
+                              color: viva ? Colors.red : Colors.grey,
+                              size: 40,
+                            );
+                          },
+                        ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 24),
+                  // Pregunta
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.10),
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        pregunta!.texto,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.black87,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  // Opciones
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      children: pregunta!.opciones.map((opcion) {
+                        return OpcionButton(
+                          texto: opcion.texto,
+                          onTap: () => responder(opcion.id),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  // Progreso
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 16,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: LinearProgressIndicator(
+                        value: usuarioEstado.progreso,
+                        minHeight: 12,
+                        backgroundColor: Colors.white.withOpacity(0.6),
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          Colors.green,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -240,10 +250,7 @@ class OpcionButton extends StatelessWidget {
           shadowColor: Colors.black54,
           elevation: 3,
         ),
-        child: Text(
-          texto,
-          style: const TextStyle(fontSize: 16),
-        ),
+        child: Text(texto, style: const TextStyle(fontSize: 16)),
       ),
     );
   }

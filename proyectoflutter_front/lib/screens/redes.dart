@@ -62,7 +62,9 @@ class Tema2Page extends StatelessWidget {
             builder: (context, nivelesSnapshot) {
               if (nivelesSnapshot.hasError) {
                 return Center(
-                  child: Text('Error al cargar niveles: ${nivelesSnapshot.error}'),
+                  child: Text(
+                    'Error al cargar niveles: ${nivelesSnapshot.error}',
+                  ),
                 );
               }
 
@@ -83,9 +85,9 @@ class Tema2Page extends StatelessWidget {
                   Text(
                     rama.ramaNombre,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.teal[700],
-                        ),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal[700],
+                    ),
                   ),
                   const SizedBox(height: 32),
                   Expanded(
@@ -95,7 +97,9 @@ class Tema2Page extends StatelessWidget {
                         final desbloqueado = nivel.id <= rama.nivelActual;
                         return NivelCard(
                           nivel: nivel.nombre,
-                          icon: desbloqueado ? Icons.play_circle_fill : Icons.lock,
+                          icon: desbloqueado
+                              ? Icons.play_circle_fill
+                              : Icons.lock,
                           color: desbloqueado ? Colors.green : Colors.grey,
                           stars: desbloqueado ? 3 : 0,
                           locked: !desbloqueado,
@@ -143,14 +147,8 @@ class Tema2Page extends StatelessWidget {
             icon: Icon(Icons.emoji_events),
             label: 'Logros',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
     );
@@ -184,9 +182,9 @@ class NivelCard extends StatelessWidget {
         leading: Icon(icon, size: 40, color: color),
         title: Text(
           nivel,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         subtitle: Row(
           children: List.generate(
@@ -195,7 +193,10 @@ class NivelCard extends StatelessWidget {
           ),
         ),
         trailing: locked
-            ? const Icon(Icons.lock_outline, color: Color.fromARGB(255, 175, 175, 175))
+            ? const Icon(
+                Icons.lock_outline,
+                color: Color.fromARGB(255, 175, 175, 175),
+              )
             : const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: locked ? null : onTap,
       ),

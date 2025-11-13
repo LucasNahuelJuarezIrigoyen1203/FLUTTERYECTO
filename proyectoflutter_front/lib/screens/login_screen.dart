@@ -62,7 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _mostrarMensaje(String mensaje) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mensaje)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(mensaje)));
   }
 
   @override
@@ -113,7 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.teal[400],
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 12,
+                      ),
                     ),
                     child: const Text('Ingresar'),
                   ),
@@ -122,12 +127,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const RegistroScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const RegistroScreen(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.teal[200],
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 12,
+                      ),
                     ),
                     child: const Text('Registrarse'),
                   ),

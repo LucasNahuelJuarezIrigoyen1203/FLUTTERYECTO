@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import pyodbc
-from db import get_db_connection
+from db import conn
 
 router = APIRouter()
 
@@ -10,7 +10,6 @@ class MascotaNombreRequest(BaseModel):
 
 @router.post("/usuarios/{usuario_id}/mascota_por_nombre")
 def actualizar_mascota_por_nombre(usuario_id: int, request: MascotaNombreRequest):
-    conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute("SELECT id FROM mascotas WHERE nombre = ?", (request.nombre,))
