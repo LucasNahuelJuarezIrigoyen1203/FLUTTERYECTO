@@ -143,3 +143,6 @@ class EstadoUsuarioResponse(BaseModel):
     vidas: int
     mascota_activa: Optional[Mascota]
     ramas_estado: List[RamaEstado]
+
+class VidasRegenerar(BaseModel):
+    vidas: int

@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import '../models/usuario_activo.dart';
-import '../service/usuario_service.dart'; // ✅ para llamar al backend
+import '../service/usuario_service.dart';
 
 class UsuarioScreen extends StatefulWidget {
   final String nombre;
   final String correo;
 
-  const UsuarioScreen({
-    super.key,
-    required this.nombre,
-    required this.correo,
-  });
+  const UsuarioScreen({super.key, required this.nombre, required this.correo});
 
   @override
   State<UsuarioScreen> createState() => _UsuarioScreenState();
@@ -40,7 +36,6 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
     'assets/images/ballena.png',
   ];
 
-  // ✅ Lista paralela con los nombres de las mascotas
   final List<String> nombresMascotas = [
     'Ballena Azul',
     'Ballena Gris',
@@ -66,7 +61,6 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
 
   int avatarIndex = 0;
 
-  // ✅ Cambiar avatar y sincronizar con backend
   void cambiarAvatar() async {
     setState(() {
       avatarIndex = (avatarIndex + 1) % avatares.length;
@@ -80,6 +74,40 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
     } catch (e) {
       print('Error al actualizar mascota: $e');
     }
+  }
+
+  /// ✅ Cerrar sesión y regenerar vidas con SnackBar
+  Future<void> cerrarSesion(BuildContext context) async {
+    try {
+      await actualizarVidasUsuario(UsuarioActivo.id, 5);
+      print("✅ Vidas regeneradas a 5 para usuario ${UsuarioActivo.id}");
+
+      // 🔔 Mostrar SnackBar de confirmación
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: const [
+              Icon(Icons.favorite, color: Colors.white),
+              SizedBox(width: 12),
+              Text(
+                '¡Vidas regeneradas! 🩷',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.teal,
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      // Esperar para que el usuario lo vea
+      await Future.delayed(const Duration(seconds: 2));
+    } catch (e) {
+      print("⚠️ Error al regenerar vidas: $e");
+    }
+
+    UsuarioActivo.logout();
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   @override
@@ -121,7 +149,6 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // ✅ Mostrar nombre del usuario
                   Text(
                     widget.nombre,
                     style: TextStyle(
@@ -131,13 +158,11 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // ✅ Mostrar correo
                   Text(
                     widget.correo,
                     style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                   ),
                   const SizedBox(height: 8),
-                  // ✅ Mostrar nombre de la mascota activa
                   Text(
                     nombresMascotas[avatarIndex],
                     style: TextStyle(fontSize: 16, color: Colors.teal[600]),
@@ -148,21 +173,18 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                       backgroundColor: Colors.teal[400],
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 12),
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () {
-                      UsuarioActivo.logout();
-                      Navigator.pushReplacementNamed(context, '/login');
-                    },
+                    onPressed: () => cerrarSesion(context),
                     child: const Text('Cerrar sesión'),
                   ),
                 ],
               ),
-
-              // 🔄 Botón para cambiar avatar
               Positioned(
                 top: 0,
                 right: 0,

@@ -6,8 +6,12 @@ import '/models/usuario_estado.dart';
 /// 🔹 Mapea el nombre de la rama a un asset de fondo
 String fondoPorRama(String ramaNombre) {
   final nombre = ramaNombre.trim().toLowerCase();
-  if (nombre.contains('Aplicaciones Moviles')) return 'assets/images/fondo_cuervo.png';
-  if (nombre.contains('web')) return 'assets/images/fondo_panda.png';
+  if (nombre.contains('aplicaciones moviles')) {
+    return 'assets/images/fondo_cuervo.png';
+  }
+  if (nombre.contains('web')) {
+    return 'assets/images/fondo_panda.png';
+  }
   if (nombre.contains('desktop') || nombre.contains('escritorio')) {
     return 'assets/images/fondo_ballena.png';
   }
@@ -65,14 +69,11 @@ class _PantallaNivelState extends State<PantallaNivel> {
   }
 
   Future<void> responder(int opcionId) async {
-    setState(() {
-      cargando = true;
-      procesandoRespuesta = true;
-    });
+    setState(() => procesandoRespuesta = true);
     try {
       final resultado = await enviarRespuesta(
         usuarioId: usuarioEstado.id,
-        preguntaId: pregunta!.id,
+        preguntaId: pregunta?.id ?? 0,
         opcionId: opcionId,
       );
 
@@ -83,14 +84,33 @@ class _PantallaNivelState extends State<PantallaNivel> {
         );
       });
 
+      // 🔹 Mostrar alerta según resultado
+      if (resultado.correcta == false) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Respuesta incorrecta ❌ ¡Has perdido una vida!',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Colors.redAccent,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('¡Correcto! 🎉'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+
       await cargarPregunta(); // siguiente pregunta
     } catch (e) {
       debugPrint('Error al responder: $e');
     } finally {
-      setState(() {
-        cargando = false;
-        procesandoRespuesta = false;
-      });
+      setState(() => procesandoRespuesta = false);
     }
   }
 
@@ -115,149 +135,153 @@ class _PantallaNivelState extends State<PantallaNivel> {
         child: cargando
             ? const Center(child: CircularProgressIndicator())
             : pregunta == null
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          '¡Nivel completado!',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/paginainicial');
-                          },
-                          child: const Text('Volver al menú'),
-                        ),
-                      ],
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      '¡Nivel completado!',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  )
-                : Column(
-                    children: [
-                      const SizedBox(height: 16),
-                      // Encabezado con nombre de la rama
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            widget.ramaNombre,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          '/paginainicial',
+                        );
+                      },
+                      child: const Text('Volver al menú'),
+                    ),
+                  ],
+                ),
+              )
+            : Column(
+                children: [
+                  const SizedBox(height: 16),
+                  // Encabezado con nombre de la rama
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        widget.ramaNombre,
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  // Vidas
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(totalVidas, (index) {
+                      final viva = index < usuarioEstado.vidas;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Image.asset(
+                          viva
+                              ? 'assets/images/corazon_normal.gif'
+                              : 'assets/images/corazon_roto.gif',
+                          height: 40,
+                          width: 40,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              viva ? Icons.favorite : Icons.favorite_border,
+                              color: viva ? Colors.red : Colors.grey,
+                              size: 40,
+                            );
+                          },
+                        ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 24),
+                  // Pregunta
+                  if (pregunta != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.10),
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          pregunta?.texto ?? '',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black87,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      // Vidas
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(totalVidas, (index) {
-                          final viva = index < usuarioEstado.vidas;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Image.asset(
-                              viva
-                                  ? 'assets/images/corazon_normal.gif'
-                                  : 'assets/images/corazon_roto.gif',
-                              height: 40,
-                              width: 40,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(
-                                  viva ? Icons.favorite : Icons.favorite_border,
-                                  color: viva ? Colors.red : Colors.grey,
-                                  size: 40,
-                                );
-                              },
-                            ),
-                          );
-                        }),
-                      ),
-                      const SizedBox(height: 24),
-                      // Pregunta
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.10),
-                                blurRadius: 6,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Text(
-                            pregunta!.texto,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black87,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      // Opciones
-                      Expanded(
-                        child: ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                          children: pregunta!.opciones.map((opcion) {
+                    ),
+                  const SizedBox(height: 32),
+                  // Opciones
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      children:
+                          pregunta?.opciones.map((opcion) {
                             return OpcionButton(
                               texto: opcion.texto,
                               onTap: () => responder(opcion.id),
                               enabled: !procesandoRespuesta,
                             );
-                          }).toList(),
-                        ),
-                      ),
-                      // Progreso
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: LinearProgressIndicator(
-                                value: usuarioEstado.progreso,
-                                minHeight: 12,
-                                backgroundColor:
-                                    Colors.white.withOpacity(0.6),
-                                valueColor:
-                                    const AlwaysStoppedAnimation<Color>(
-                                  Colors.green,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              '${(usuarioEstado.progreso * 100).round()}%',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                          }).toList() ??
+                          [],
+                    ),
                   ),
+                  // Progreso
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 16,
+                    ),
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: LinearProgressIndicator(
+                            value: (usuarioEstado.progreso ?? 0).clamp(
+                              0.0,
+                              1.0,
+                            ),
+                            minHeight: 12,
+                            backgroundColor: Colors.white.withOpacity(0.6),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Colors.green,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '${((usuarioEstado.progreso ?? 0) * 100).clamp(0, 100).round()}%',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }

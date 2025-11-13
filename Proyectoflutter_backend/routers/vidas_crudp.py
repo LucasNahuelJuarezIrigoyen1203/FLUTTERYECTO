@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Request
-from models import VidaCreate, VidaResponse, VidaUpdate, EvaluacionNivel
+from models import VidaCreate, VidaResponse, VidaUpdate, EvaluacionNivel, VidasRegenerar
 from db import conn
 from datetime import datetime
 
@@ -38,7 +38,7 @@ def vidas_con_estado(usuario_id: int):
         } if restante is not None else None
     }
 
-# 🔁 POST /usuarios/{usuario_id}/vidas — Crear nueva vida
+# 🔁 POST /usuarios/{usuario_id}/vidas — Crear nueva vida individual
 @router.post("/usuarios/{usuario_id}/vidas", response_model=VidaResponse)
 def crear_vida(usuario_id: int, vida: VidaCreate):
     cursor = conn.cursor()
@@ -55,6 +55,30 @@ def crear_vida(usuario_id: int, vida: VidaCreate):
         id=r[0], usuario_id=r[1], puntos=r[2],
         created_at=r[3], updated_at=r[4], activa=r[5]
     )
+
+@router.post("/usuarios/{usuario_id}/vidas/regenerar")
+def regenerar_vidas(usuario_id: int, datos: VidasRegenerar):
+    try:
+        cursor = conn.cursor()
+        cantidad = datos.vidas
+
+        if cantidad <= 0 or cantidad > 5:
+            raise HTTPException(status_code=400, detail="Cantidad de vidas inválida")
+
+        # Actualizar el campo vidas en la tabla usuarios
+        cursor.execute(
+            "UPDATE usuarios SET vidas = ?, updated_at = GETDATE() WHERE id = ?",
+            (cantidad, usuario_id)
+        )
+        conn.commit()
+
+        return {"mensaje": f"Vidas del usuario {usuario_id} actualizadas a {cantidad}"}
+
+    except Exception as e:
+        print(f"❌ Error interno: {e}")
+        raise HTTPException(status_code=500, detail="Error interno al regenerar vidas")
+
+
 
 # 🔁 GET /vidas/{id} — Obtener vida por ID
 @router.get("/vidas/{id}", response_model=VidaResponse)

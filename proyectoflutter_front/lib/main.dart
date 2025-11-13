@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/pagina_inicial.dart';
 import 'screens/aplicaciones_moviles.dart';
-import 'screens/redes.dart';
-import 'screens/destock.dart';
+import 'screens/Web.dart';
+import 'screens/Desktop.dart';
 
 void main() {
   // 🔒 Limpia cualquier estado previo al iniciar la app

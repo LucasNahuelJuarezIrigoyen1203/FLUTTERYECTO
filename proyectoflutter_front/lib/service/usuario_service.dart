@@ -49,10 +49,7 @@ Future<UsuarioEstado> loginUsuario(String correo, String contrasena) async {
   final response = await http.post(
     Uri.parse('$baseUrl/login'),
     headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({
-      'correo': correo,
-      'contrasena': contrasena,
-    }),
+    body: jsonEncode({'correo': correo, 'contrasena': contrasena}),
   );
 
   if (response.statusCode == 200) {
@@ -87,7 +84,7 @@ Future<UsuarioEstado> registrarUsuario(
   }
 }
 
-/// 🔹 Actualiza la mascota activa del usuario
+/// 🔹 Actualiza la mascota activa del usuario por ID
 Future<void> actualizarMascotaActiva(int usuarioId, int mascotaId) async {
   final response = await http.post(
     Uri.parse('$baseUrl/usuarios/$usuarioId/mascota'),
@@ -102,7 +99,11 @@ Future<void> actualizarMascotaActiva(int usuarioId, int mascotaId) async {
   }
 }
 
-Future<void> actualizarMascotaPorNombre(int usuarioId, String nombreMascota) async {
+/// 🔹 Actualiza la mascota activa del usuario por nombre
+Future<void> actualizarMascotaPorNombre(
+  int usuarioId,
+  String nombreMascota,
+) async {
   final response = await http.post(
     Uri.parse('$baseUrl/usuarios/$usuarioId/mascota_por_nombre'),
     headers: {'Content-Type': 'application/json'},
@@ -114,3 +115,17 @@ Future<void> actualizarMascotaPorNombre(int usuarioId, String nombreMascota) asy
   }
 }
 
+/// 🔹 Actualiza las vidas del usuario
+Future<void> actualizarVidasUsuario(int usuarioId, int vidas) async {
+  final response = await http.post(
+    Uri.parse('$baseUrl/usuarios/$usuarioId/vidas'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({'vidas': vidas}),
+  );
+
+  if (response.statusCode == 200) {
+    print('✅ Vidas actualizadas correctamente a $vidas');
+  } else {
+    throw Exception('Error al actualizar vidas: ${response.body}');
+  }
+}
