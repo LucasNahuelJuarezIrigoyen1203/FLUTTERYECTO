@@ -118,7 +118,7 @@ Future<void> actualizarMascotaPorNombre(
 /// 🔹 Actualiza las vidas del usuario
 Future<void> actualizarVidasUsuario(int usuarioId, int vidas) async {
   final response = await http.post(
-    Uri.parse('$baseUrl/usuarios/$usuarioId/vidas'),
+    Uri.parse('$baseUrl/usuarios/$usuarioId/vidas/regenerar'),
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({'vidas': vidas}),
   );
