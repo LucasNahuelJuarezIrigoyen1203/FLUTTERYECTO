@@ -1,15 +1,15 @@
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id)
 VALUES 
-  ('¿Qué método se usa para abrir una nueva pantalla?', 1, 2, 2),
-  ('¿Qué widget se usa para escribir texto en un campo editable?', 1, 2, 2),
-  ('¿Qué función actualiza la interfaz de un StatefulWidget?', 1, 2, 2),
-  ('¿Con qué propiedad se define el estilo global (colores, tipografía) en un MaterialApp?', 1, 2, 2),
-  ('¿Qué widget muestra una lista de elementos con desplazamiento vertical?', 1, 2, 2),
-  ('¿Qué widget crea la barra superior con título en una pantalla Flutter?', 1, 2, 2),
-  ('¿Cuál de estos widgets crea un botón flotante circular?', 1, 2, 2),
-  ('¿Qué widget se usa para agregar espacio alrededor de otro widget?', 1, 2, 2),
-  ('¿Qué widget usarías para dejar un espacio vacío entre dos elementos?', 1, 2, 2),
-  ('¿Cómo se llama la técnica que usa nombres para identificar pantallas en la navegación?', 1, 2, 2);
+  ('¿Que metodo se usa para abrir una nueva pantalla?', 1, 2, 2),
+  ('¿Que widget se usa para escribir texto en un campo editable?', 1, 2, 2),
+  ('¿Que funcion actualiza la interfaz de un StatefulWidget?', 1, 2, 2),
+  ('¿Con que propiedad se define el estilo global (colores, tipografia) en un MaterialApp?', 1, 2, 2),
+  ('¿Que widget muestra una lista de elementos con desplazamiento vertical?', 1, 2, 2),
+  ('¿Que widget crea la barra superior con titulo en una pantalla Flutter?', 1, 2, 2),
+  ('¿Cual de estos widgets crea un botón flotante circular?', 1, 2, 2),
+  ('¿Que widget se usa para agregar espacio alrededor de otro widget?', 1, 2, 2),
+  ('¿Que widget usarias para dejar un espacio vacío entre dos elementos?', 1, 2, 2),
+  ('¿Como se llama la tecnica que usa nombres para identificar pantallas en la navegacion?', 1, 2, 2);
 
 
 -- Pregunta 1

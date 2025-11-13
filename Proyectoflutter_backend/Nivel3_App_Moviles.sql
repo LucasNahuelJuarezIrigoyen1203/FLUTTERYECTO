@@ -1,15 +1,15 @@
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id)
 VALUES 
-  #21('¿Cual de estas opciones no es una herramienta de gestión de estado en Flutter?', 1, 3, 3),
-  #22('¿Que paquete se usa para realizar sollicitudes de el protocolo de hipertexto en flutter?', 1, 3, 3),
-  #23('¿Que función convierte una respuesta JSON en codigo Dart?', 1, 3, 3),
-  #24('¿Como se llama la funcion de Flutter que permite ver cambios instanteos en el codigo?', 1, 3, 3),
-  #25('¿Que tipo de objeto representa una operacion Asincronica en Dart?', 1, 3, 3),
-  #26('¿Que widget se usa para mostrar datos provenientes de una operacion asincronica?', 1, 3, 3),
-  #27('¿Que representa un Stream en Flutter?', 1, 3, 3),
-  #28('¿Que palabra clave mejora el rendimiento al indicar que un widget no cambia?', 1, 3, 3),
-  #29('¿Que patron usa streams para manejar el estado y la logica de negocio?', 1, 3, 3),
-  #30('¿Que paquete se usa para manejar bases de datos locales en Flutter?', 1, 3, 3);
+  ('¿Cual de estas opciones no es una herramienta de gestión de estado en Flutter?', 1, 3, 3),
+  ('¿Que paquete se usa para realizar sollicitudes de el protocolo de hipertexto en flutter?', 1, 3, 3),
+  ('¿Que función convierte una respuesta JSON en codigo Dart?', 1, 3, 3),
+  ('¿Como se llama la funcion de Flutter que permite ver cambios instanteos en el codigo?', 1, 3, 3),
+  ('¿Que tipo de objeto representa una operacion Asincronica en Dart?', 1, 3, 3),
+  ('¿Que widget se usa para mostrar datos provenientes de una operacion asincronica?', 1, 3, 3),
+  ('¿Que representa un Stream en Flutter?', 1, 3, 3),
+  ('¿Que palabra clave mejora el rendimiento al indicar que un widget no cambia?', 1, 3, 3),
+  ('¿Que patron usa streams para manejar el estado y la logica de negocio?', 1, 3, 3),
+  ('¿Que paquete se usa para manejar bases de datos locales en Flutter?', 1, 3, 3);
 
 
 -- Pregunta 1

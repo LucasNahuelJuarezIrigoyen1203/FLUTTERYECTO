@@ -33,7 +33,7 @@ class AplicacionesMovilesPage extends StatelessWidget {
                   ramasEstado: [
                     RamaEstado(
                       ramaId: 1,
-                      ramaNombre: 'Aplicaciones Móviles',
+                      ramaNombre: 'Aplicaciones Moviles',
                       nivelActual: 1,
                       progreso: 0.0,
                     ),
@@ -64,7 +64,7 @@ class AplicacionesMovilesPage extends StatelessWidget {
               );
               return RamaEstado(
                 ramaId: 1,
-                ramaNombre: 'Aplicaciones Móviles',
+                ramaNombre: 'Aplicaciones Moviles',
                 nivelActual: 1,
                 progreso: 0.0,
               );

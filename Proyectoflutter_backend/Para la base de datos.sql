@@ -68,7 +68,7 @@ CREATE TABLE mascotas (
     descripcion NVARCHAR(500),
     activo BIT DEFAULT 1,
     created_at DATETIME DEFAULT GETDATE()
-    ADD imagen NVARCHAR(255);
+    imagen NVARCHAR(255);
 );
 
 -- Condiciones de desbloqueo de mascotas

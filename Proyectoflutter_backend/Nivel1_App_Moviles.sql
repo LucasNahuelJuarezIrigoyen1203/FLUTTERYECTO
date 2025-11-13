@@ -1,13 +1,13 @@
 INSERT INTO ramas (nombre)
 VALUES 
-  ('Aplicaciones Móviles'),
+  ('Aplicaciones Moviles'),
   ('Redes'),
   ('Destock');
 
 
 INSERT INTO dificultades (nombre, multiplicador)
 VALUES 
-  ('Fácil', 1.0),
+  ('Facil', 1.0),
   ('Intermedio', 1.5),
   ('Difícil', 2.0);
 
@@ -15,36 +15,36 @@ VALUES
 -- Aplicaciones Móviles (rama_id = 1)
 INSERT INTO niveles (nombre, puntos_requeridos, ramas_id)
 VALUES 
-  ('Nivel 1 - Aplicaciones Móviles', 100, 1),
-  ('Nivel 2 - Aplicaciones Móviles', 200, 1),
-  ('Nivel 3 - Aplicaciones Móviles', 300, 1);
+  ('Nivel 1 - Aplicaciones Moviles', 100, 1),
+  ('Nivel 2 - Aplicaciones Moviles', 200, 1),
+  ('Nivel 3 - Aplicaciones Moviles', 300, 1);
 
 -- Redes (rama_id = 2)
 INSERT INTO niveles (nombre, puntos_requeridos, ramas_id)
 VALUES 
-  ('Nivel 1 - Redes', 100, 2),
-  ('Nivel 2 - Redes', 200, 2),
-  ('Nivel 3 - Redes', 300, 2);
+  ('Nivel 1 - Web', 100, 2),
+  ('Nivel 2 - Web', 200, 2),
+  ('Nivel 3 - Web', 300, 2);
 
 -- Destock (rama_id = 3)
 INSERT INTO niveles (nombre, puntos_requeridos, ramas_id)
 VALUES 
-  ('Nivel 1 - Destock', 100, 3),
-  ('Nivel 2 - Destock', 200, 3),
-  ('Nivel 3 - Destock', 300, 3);
+  ('Nivel 1 - Desktop', 100, 3),
+  ('Nivel 2 - Desktop', 200, 3),
+  ('Nivel 3 - Desktop', 300, 3);
 
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id)
 VALUES 
-  ('¿Qué lenguaje de programación utiliza Flutter?', 1, 1, 1),
-  ('¿Qué son los widgets en Flutter?', 1, 1, 1),
-  ('¿Cuál tipo de widget se usa cuando el contenido cambia durante la ejecución?', 1, 1, 1),
-  ('¿Qué función inicia la ejecución de la aplicación Flutter?', 1, 1, 1),
-  ('¿Qué widget se usa para iniciar una aplicación con estilo Material Design?', 1, 1, 1),
-  ('¿Qué widget sirve como base para crear la estructura visual principal de una pantalla?', 1, 1, 1),
-  ('¿Qué widget se usa para mostrar texto en Flutter?', 1, 1, 1),
-  ('¿Qué widget muestra una imagen en la interfaz?', 1, 1, 1),
-  ('¿Qué widget usarías para agregar fondo y margen a otro widget?', 1, 1, 1),
-  ('Si quieres colocar elementos uno debajo del otro, ¿qué widget usas?', 1, 1, 1);
+  ('¿Que lenguaje de programacion utiliza Flutter?', 1, 1, 1),
+  ('¿Que son los widgets en Flutter?', 1, 1, 1),
+  ('¿Cual tipo de widget se usa cuando el contenido cambia durante la ejecucion?', 1, 1, 1),
+  ('¿Que funcion inicia la ejecucion de la aplicación Flutter?', 1, 1, 1),
+  ('¿Que widget se usa para iniciar una aplicación con estilo Material Design?', 1, 1, 1),
+  ('¿Que widget sirve como base para crear la estructura visual principal de una pantalla?', 1, 1, 1),
+  ('¿Que widget se usa para mostrar texto en Flutter?', 1, 1, 1),
+  ('¿Que widget muestra una imagen en la interfaz?', 1, 1, 1),
+  ('¿Que widget usarias para agregar fondo y margen a otro widget?', 1, 1, 1),
+  ('Si quieres colocar elementos uno debajo del otro, ¿que widget usas?', 1, 1, 1);
 
 
 -- Pregunta 1

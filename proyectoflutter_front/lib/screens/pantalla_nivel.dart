@@ -3,30 +3,21 @@ import '/api.dart';
 import '/models/models.dart';
 import '/models/usuario_estado.dart';
 
-/// Mapea el nombre de la rama a un asset de fondo.
-/// Ajustá los paths a tus imágenes reales.
+/// 🔹 Mapea el nombre de la rama a un asset de fondo
 String fondoPorRama(String ramaNombre) {
-  switch (ramaNombre.trim().toLowerCase()) {
-    case 'aplicaciones móviles':
-    case 'aplicaciones moviles':
-    case 'app móviles':
-      return 'assets/images/fondo_cuervo.png';
-    case 'redes':
-    case 'redes y comunicaciones':
-      return 'assets/images/fondo_panda.png';
-    case 'desktop':
-    case 'destock':
-    case 'escritorio':
-      return 'assets/images/fondo_ballena.png';
-    default:
-      return 'assets/images/fondo_default.png';
+  final nombre = ramaNombre.trim().toLowerCase();
+  if (nombre.contains('Aplicaciones Moviles')) return 'assets/images/fondo_cuervo.png';
+  if (nombre.contains('web')) return 'assets/images/fondo_panda.png';
+  if (nombre.contains('desktop') || nombre.contains('escritorio')) {
+    return 'assets/images/fondo_ballena.png';
   }
+  return 'assets/images/fondo_default.png';
 }
 
 class PantallaNivel extends StatefulWidget {
   final int nivelId;
   final UsuarioEstado usuarioEstado;
-  final String ramaNombre; // ← nombre de la rama para diferenciar el fondo
+  final String ramaNombre;
 
   const PantallaNivel({
     super.key,
@@ -40,10 +31,10 @@ class PantallaNivel extends StatefulWidget {
 }
 
 class _PantallaNivelState extends State<PantallaNivel> {
-  late UsuarioEstado
-  usuarioEstado; // copia local que iremos actualizando con copyWith
+  late UsuarioEstado usuarioEstado;
   Pregunta? pregunta;
   bool cargando = true;
+  bool procesandoRespuesta = false;
 
   @override
   void initState() {
@@ -74,7 +65,10 @@ class _PantallaNivelState extends State<PantallaNivel> {
   }
 
   Future<void> responder(int opcionId) async {
-    setState(() => cargando = true);
+    setState(() {
+      cargando = true;
+      procesandoRespuesta = true;
+    });
     try {
       final resultado = await enviarRespuesta(
         usuarioId: usuarioEstado.id,
@@ -82,7 +76,6 @@ class _PantallaNivelState extends State<PantallaNivel> {
         opcionId: opcionId,
       );
 
-      // Actualizamos el estado de usuario usando copyWith (inmutable)
       setState(() {
         usuarioEstado = usuarioEstado.copyWith(
           vidas: resultado.vidasRestantes ?? usuarioEstado.vidas,
@@ -94,7 +87,10 @@ class _PantallaNivelState extends State<PantallaNivel> {
     } catch (e) {
       debugPrint('Error al responder: $e');
     } finally {
-      setState(() => cargando = false);
+      setState(() {
+        cargando = false;
+        procesandoRespuesta = false;
+      });
     }
   }
 
@@ -119,110 +115,149 @@ class _PantallaNivelState extends State<PantallaNivel> {
         child: cargando
             ? const Center(child: CircularProgressIndicator())
             : pregunta == null
-            ? const Center(child: Text('No hay preguntas disponibles'))
-            : Column(
-                children: [
-                  const SizedBox(height: 16),
-                  // Encabezado con nombre de la rama
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        widget.ramaNombre,
-                        style: Theme.of(context).textTheme.headlineSmall
-                            ?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Vidas
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(totalVidas, (index) {
-                      final viva = index < usuarioEstado.vidas;
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Image.asset(
-                          viva
-                              ? 'assets/images/corazon_normal.gif'
-                              : 'assets/images/corazon_roto.gif',
-                          height: 40,
-                          width: 40,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Icon(
-                              viva ? Icons.favorite : Icons.favorite_border,
-                              color: viva ? Colors.red : Colors.grey,
-                              size: 40,
-                            );
-                          },
-                        ),
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: 24),
-                  // Pregunta
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.10),
-                            blurRadius: 6,
-                            offset: const Offset(0, 3),
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          '¡Nivel completado!',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
-                        ],
-                      ),
-                      child: Text(
-                        pregunta!.texto,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.black87,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, '/paginainicial');
+                          },
+                          child: const Text('Volver al menú'),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  // Opciones
-                  Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      children: pregunta!.opciones.map((opcion) {
-                        return OpcionButton(
-                          texto: opcion.texto,
-                          onTap: () => responder(opcion.id),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  // Progreso
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 16,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: LinearProgressIndicator(
-                        value: usuarioEstado.progreso,
-                        minHeight: 12,
-                        backgroundColor: Colors.white.withOpacity(0.6),
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          Colors.green,
+                  )
+                : Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      // Encabezado con nombre de la rama
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            widget.ramaNombre,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
                         ),
                       ),
-                    ),
+                      const SizedBox(height: 8),
+                      // Vidas
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(totalVidas, (index) {
+                          final viva = index < usuarioEstado.vidas;
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Image.asset(
+                              viva
+                                  ? 'assets/images/corazon_normal.gif'
+                                  : 'assets/images/corazon_roto.gif',
+                              height: 40,
+                              width: 40,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(
+                                  viva ? Icons.favorite : Icons.favorite_border,
+                                  color: viva ? Colors.red : Colors.grey,
+                                  size: 40,
+                                );
+                              },
+                            ),
+                          );
+                        }),
+                      ),
+                      const SizedBox(height: 24),
+                      // Pregunta
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.10),
+                                blurRadius: 6,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            pregunta!.texto,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.black87,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      // Opciones
+                      Expanded(
+                        child: ListView(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          children: pregunta!.opciones.map((opcion) {
+                            return OpcionButton(
+                              texto: opcion.texto,
+                              onTap: () => responder(opcion.id),
+                              enabled: !procesandoRespuesta,
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      // Progreso
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: LinearProgressIndicator(
+                                value: usuarioEstado.progreso,
+                                minHeight: 12,
+                                backgroundColor:
+                                    Colors.white.withOpacity(0.6),
+                                valueColor:
+                                    const AlwaysStoppedAnimation<Color>(
+                                  Colors.green,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              '${(usuarioEstado.progreso * 100).round()}%',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
       ),
     );
   }
@@ -231,15 +266,21 @@ class _PantallaNivelState extends State<PantallaNivel> {
 class OpcionButton extends StatelessWidget {
   final String texto;
   final VoidCallback onTap;
+  final bool enabled;
 
-  const OpcionButton({super.key, required this.texto, required this.onTap});
+  const OpcionButton({
+    super.key,
+    required this.texto,
+    required this.onTap,
+    this.enabled = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: ElevatedButton(
-        onPressed: onTap,
+        onPressed: enabled ? onTap : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.deepPurple,
           foregroundColor: Colors.white,
