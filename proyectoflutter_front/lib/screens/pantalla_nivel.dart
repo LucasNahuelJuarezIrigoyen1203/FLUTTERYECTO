@@ -105,7 +105,39 @@ class _PantallaNivelState extends State<PantallaNivel> {
           ),
         );
       }
+      setState(() {
+        usuarioEstado = usuarioEstado.copyWith(
+          vidas: resultado.vidasRestantes ?? usuarioEstado.vidas,
+          progreso: resultado.progreso,
+        );
+      });
 
+      // 🔹 Verificar si el progreso llegó al 100%
+      if (usuarioEstado.progreso >= 1.0) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            title: const Text("¡Nivel terminado! 🎉"),
+            content: const Text(
+              "Has completado el nivel. Volverás a la pantalla inicial.",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/paginainicial',
+                    (Route<dynamic> route) => false,
+                  );
+                },
+                child: const Text("Aceptar"),
+              ),
+            ],
+          ),
+        );
+        return; // 👈 no cargar más preguntas
+      }
       // 🔹 Verificar si se quedó sin vidas
       if (usuarioEstado.sinVidas) {
         showDialog(
