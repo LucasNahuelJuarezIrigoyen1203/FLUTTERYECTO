@@ -47,7 +47,7 @@ class UsuarioResponse(BaseModel):
     vidas: int
     nivel_actual: int
     progreso: float
-    ramas_estado: list[RamaEstado]
+    ramas_estado: List["RamaEstado"]
 
 # 🧬 Login
 class LoginRequest(BaseModel):
@@ -85,10 +85,11 @@ class RespuestaInput(BaseModel):
     opcion_seleccionada: int
 
 class RespuestaOutput(BaseModel):
-    correcta: bool
+    correcta: bool   # ✅ ahora se espera directamente un bool (true/false)
     nivel_actual: int
     progreso: float
     vidas_restantes: Optional[int] = None
+    siguiente_pregunta_id: Optional[int] = None
 
 # 🧠 Preguntas y opciones
 class Opcion(BaseModel):
@@ -98,7 +99,7 @@ class Opcion(BaseModel):
 class PreguntaConOpciones(BaseModel):
     id: int
     texto: str
-    opciones: list[Opcion]
+    opciones: List[Opcion]
 
 # 📊 Niveles
 class Nivel(BaseModel):
@@ -114,7 +115,7 @@ class NivelDetalle(BaseModel):
     dificultad: str
     multiplicador: float
 
-# 🌿 Estado por rama
+# 🌿 Estado por rama (unificado, sin duplicados)
 class RamaEstado(BaseModel):
     rama_id: int
     rama_nombre: str
@@ -123,18 +124,11 @@ class RamaEstado(BaseModel):
     activo: Optional[bool] = True
     vidas: Optional[int] = 5
 
-    
 # 🐾 Mascota y estado de usuario
 class Mascota(BaseModel):
     id: int
     nombre: str
     imagen: str
-
-class RamaEstado(BaseModel):
-    rama_id: int
-    rama_nombre: str
-    nivel_actual: int
-    progreso: float
 
 class EstadoUsuarioResponse(BaseModel):
     usuario_id: int

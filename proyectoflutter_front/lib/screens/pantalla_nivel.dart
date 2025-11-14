@@ -69,7 +69,9 @@ class _PantallaNivelState extends State<PantallaNivel> {
   }
 
   Future<void> responder(int opcionId) async {
+    const totalPreguntas = 10; // 🔹 Ajustá según tu nivel
     setState(() => procesandoRespuesta = true);
+
     try {
       final resultado = await enviarRespuesta(
         usuarioId: usuarioEstado.id,
@@ -77,16 +79,14 @@ class _PantallaNivelState extends State<PantallaNivel> {
         opcionId: opcionId,
       );
 
-      // 🔹 Actualizar estado del usuario (vidas y progreso)
-      setState(() {
-        usuarioEstado = usuarioEstado.copyWith(
-          vidas: resultado.vidasRestantes ?? usuarioEstado.vidas,
-          progreso: resultado.progreso,
-        );
-      });
-
-      // 🔹 Mostrar alerta según resultado
       if (resultado.correcta == false) {
+        // ❌ Respuesta incorrecta
+        setState(() {
+          usuarioEstado = usuarioEstado.copyWith(
+            vidas: resultado.vidasRestantes ?? usuarioEstado.vidas,
+          );
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
@@ -97,8 +97,19 @@ class _PantallaNivelState extends State<PantallaNivel> {
             duration: Duration(seconds: 2),
           ),
         );
-        // ❌ No avanzar de pregunta si es incorrecta
       } else {
+        // ✅ Respuesta correcta
+        final incremento = 1 / totalPreguntas;
+        final nuevoProgreso =
+            (usuarioEstado.progreso + incremento).clamp(0.0, 1.0) as double;
+
+        setState(() {
+          usuarioEstado = usuarioEstado.copyWith(
+            vidas: resultado.vidasRestantes ?? usuarioEstado.vidas,
+            progreso: nuevoProgreso,
+          );
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('¡Correcto! 🎉'),
@@ -107,7 +118,6 @@ class _PantallaNivelState extends State<PantallaNivel> {
           ),
         );
 
-        // ✅ Solo cargar siguiente pregunta si fue correcta
         await cargarPregunta(preguntaId: resultado.siguientePreguntaId);
       }
 
@@ -135,7 +145,7 @@ class _PantallaNivelState extends State<PantallaNivel> {
             ],
           ),
         );
-        return; // 👈 no cargar más preguntas
+        return;
       }
     } catch (e) {
       debugPrint('Error al enviar respuesta: $e');
