@@ -132,7 +132,7 @@ class Tema2Page extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/logros');
+              Navigator.pushNamed(context, '/mascotas');
               break;
             case 1:
               Navigator.pushNamed(context, '/paginainicial');
@@ -143,10 +143,7 @@ class Tema2Page extends StatelessWidget {
           }
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_events),
-            label: 'Logros',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Mascotas'),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],

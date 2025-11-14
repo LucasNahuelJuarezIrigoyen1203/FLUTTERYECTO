@@ -170,21 +170,18 @@ class AplicacionesMovilesPage extends StatelessWidget {
           print("[FLOW] BottomNavigationBar tapped: index=$index");
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/logros');
+              Navigator.pushNamed(context, '/mascotas');
               break;
             case 1:
               Navigator.pushNamed(context, '/paginainicial');
               break;
             case 2:
-              Navigator.pushNamed(context, '/perfil');
+              Navigator.pushNamed(context, '/usuario_screen');
               break;
           }
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_events),
-            label: 'Logros',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Mascotas'),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
