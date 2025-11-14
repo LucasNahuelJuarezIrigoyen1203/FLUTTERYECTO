@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/mascota.dart';
 import '../service/mascota_service.dart';
+import '../models/usuario_activo.dart';
 
 class MascotasScreen extends StatefulWidget {
   const MascotasScreen({super.key});
@@ -12,6 +13,7 @@ class MascotasScreen extends StatefulWidget {
 class _MascotasScreenState extends State<MascotasScreen> {
   List<Mascota> mascotas = [];
   bool cargando = true;
+  int? mascotaSeleccionada; // para marcar la mascota activa
 
   @override
   void initState() {
@@ -29,6 +31,29 @@ class _MascotasScreenState extends State<MascotasScreen> {
     } catch (e) {
       print('Error al cargar mascotas: $e');
       setState(() => cargando = false);
+    }
+  }
+
+  Future<void> seleccionarMascota(Mascota mascota) async {
+    try {
+      await actualizarMascotaPorNombre(UsuarioActivo.id, mascota.nombre);
+      setState(() {
+        mascotaSeleccionada = mascota.id;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Mascota actualizada a ${mascota.nombre}"),
+          backgroundColor: Colors.teal,
+        ),
+      );
+    } catch (e) {
+      print("Error al actualizar mascota: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Error al actualizar mascota"),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
     }
   }
 
@@ -51,20 +76,25 @@ class _MascotasScreenState extends State<MascotasScreen> {
               itemCount: mascotas.length,
               itemBuilder: (context, index) {
                 final mascota = mascotas[index];
+                final seleccionada = mascotaSeleccionada == mascota.id;
+
                 return Card(
                   elevation: 4,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(
+                      color: seleccionada ? Colors.teal : Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
                   child: InkWell(
-                    onTap: () {
-                      print("Seleccionaste: ${mascota.nombre}");
-                      // Podés llamar a actualizarMascotaPorNombre aquí
-                    },
+                    onTap: () => seleccionarMascota(mascota),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // 🔹 Ajusta según si usás assets o URLs
                         Image.asset(
-                          mascota.imagen,
+                          'assets/images/${mascota.imagen}',
                           height: 80,
                           width: 80,
                           errorBuilder: (context, error, stackTrace) =>

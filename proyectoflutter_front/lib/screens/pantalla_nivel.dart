@@ -106,6 +106,33 @@ class _PantallaNivelState extends State<PantallaNivel> {
         );
       }
 
+      // 🔹 Verificar si se quedó sin vidas
+      if (usuarioEstado.sinVidas) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            title: const Text("¡Sin vidas!"),
+            content: const Text(
+              "No podés seguir jugando. Volverás a la pantalla inicial.",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/paginainicial',
+                    (Route<dynamic> route) => false,
+                  );
+                },
+                child: const Text("Aceptar"),
+              ),
+            ],
+          ),
+        );
+        return; // 👈 no cargar más preguntas
+      }
+
       await cargarPregunta(); // siguiente pregunta
     } catch (e) {
       debugPrint('Error al responder: $e');

@@ -87,3 +87,8 @@ class UsuarioEstado {
     return "Usuario: $nombre | Vidas: $vidasSeguras | Nivel: $nivelActual | Mascota: ${mascotaActiva?.nombre ?? 'Ninguna'}";
   }
 }
+
+/// 🔹 Extension helper para verificar si el usuario está sin vidas
+extension UsuarioEstadoHelper on UsuarioEstado {
+  bool get sinVidas => vidasSeguras == 0;
+}
