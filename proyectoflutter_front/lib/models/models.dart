@@ -44,9 +44,10 @@ class RespuestaOutput {
 
   factory RespuestaOutput.fromJson(Map<String, dynamic> json) {
     return RespuestaOutput(
-      correcta: json['correcta'],
-      nivelActual: json['nivel_actual'],
-      progreso: json['progreso'],
+      // 🔹 ahora se espera un bool directamente
+      correcta: json['correcta'] ?? false,
+      nivelActual: json['nivel_actual'] ?? 0,
+      progreso: (json['progreso'] as num).toDouble(),
       vidasRestantes: json['vidas_restantes'],
       siguientePreguntaId: json['siguiente_pregunta_id'],
     );
@@ -97,9 +98,6 @@ class Rama {
   Rama({required this.id, required this.nombre});
 
   factory Rama.fromJson(Map<String, dynamic> json) {
-    return Rama(
-      id: json['id'],
-      nombre: json['nombre'],
-    );
+    return Rama(id: json['id'], nombre: json['nombre']);
   }
 }

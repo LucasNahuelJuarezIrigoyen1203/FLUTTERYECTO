@@ -77,6 +77,7 @@ class _PantallaNivelState extends State<PantallaNivel> {
         opcionId: opcionId,
       );
 
+      // 🔹 Actualizar estado del usuario (vidas y progreso)
       setState(() {
         usuarioEstado = usuarioEstado.copyWith(
           vidas: resultado.vidasRestantes ?? usuarioEstado.vidas,
@@ -96,6 +97,7 @@ class _PantallaNivelState extends State<PantallaNivel> {
             duration: Duration(seconds: 2),
           ),
         );
+        // ❌ No avanzar de pregunta si es incorrecta
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -104,13 +106,10 @@ class _PantallaNivelState extends State<PantallaNivel> {
             duration: Duration(seconds: 2),
           ),
         );
+
+        // ✅ Solo cargar siguiente pregunta si fue correcta
+        await cargarPregunta(preguntaId: resultado.siguientePreguntaId);
       }
-      setState(() {
-        usuarioEstado = usuarioEstado.copyWith(
-          vidas: resultado.vidasRestantes ?? usuarioEstado.vidas,
-          progreso: resultado.progreso,
-        );
-      });
 
       // 🔹 Verificar si el progreso llegó al 100%
       if (usuarioEstado.progreso >= 1.0) {
@@ -138,36 +137,8 @@ class _PantallaNivelState extends State<PantallaNivel> {
         );
         return; // 👈 no cargar más preguntas
       }
-      // 🔹 Verificar si se quedó sin vidas
-      if (usuarioEstado.sinVidas) {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => AlertDialog(
-            title: const Text("¡Sin vidas!"),
-            content: const Text(
-              "No podés seguir jugando. Volverás a la pantalla inicial.",
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    '/paginainicial',
-                    (Route<dynamic> route) => false,
-                  );
-                },
-                child: const Text("Aceptar"),
-              ),
-            ],
-          ),
-        );
-        return; // 👈 no cargar más preguntas
-      }
-
-      await cargarPregunta(); // siguiente pregunta
     } catch (e) {
-      debugPrint('Error al responder: $e');
+      debugPrint('Error al enviar respuesta: $e');
     } finally {
       setState(() => procesandoRespuesta = false);
     }
