@@ -40,12 +40,12 @@ class PaginaInicial extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+            bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1,
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/logros');
+              Navigator.pushNamed(context, '/mascotas');
               break;
             case 1:
               // Ya estás en inicio
@@ -65,8 +65,8 @@ class PaginaInicial extends StatelessWidget {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_events),
-            label: 'Logros',
+            icon: Icon(Icons.pets),
+            label: 'Mascotas',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),

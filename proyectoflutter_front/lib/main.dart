@@ -4,6 +4,7 @@ import 'screens/pagina_inicial.dart';
 import 'screens/aplicaciones_moviles.dart';
 import 'screens/Web.dart';
 import 'screens/Desktop.dart';
+import 'screens/mascotas_screen.dart';
 
 void main() {
   // 🔒 Limpia cualquier estado previo al iniciar la app
@@ -26,6 +27,7 @@ class LoginApp extends StatelessWidget {
         '/tema1': (context) => const AplicacionesMovilesPage(),
         '/tema2': (context) => const Tema2Page(),
         '/tema3': (context) => const Tema3Page(),
+        '/mascotas': (context) => const MascotasScreen(),
       },
     );
   }
