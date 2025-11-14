@@ -2,46 +2,46 @@
 -- Preguntas Nivel Básico (nivel_id = 1)
 -- =========================
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id) VALUES
-('¿Cuál es la etiqueta correcta para crear un párrafo en HTML?', 2, 1, 1),
-('¿Cómo se seleccionan todos los elementos <h1> en CSS?', 2, 1, 1),
-('¿Cuál de estas formas ejecuta código JS cuando se hace clic en un botón HTML?', 2, 1, 1),
-('¿Qué atributo se usa para apuntar la fuente de una imagen?', 2, 1, 1),
-('¿Qué propiedad CSS controla el espacio exterior entre elementos?', 2, 1, 1),
-('¿Cuál es la estructura mínima correcta de un enlace que apunta a https://ejemplo.com?', 2, 1, 1),
-('¿Cómo se aplica una clase llamada "boton" en CSS?', 2, 1, 1),
-('¿Cuál palabra clave crea una variable cuyo valor puede cambiar?', 2, 1, 1),
-('¿Qué type se usa para pedir un correo electrónico y activar validación básica del navegador?', 2, 1, 1),
-('¿Cuál es la sintaxis correcta para enlazar style.css dentro del head?', 2, 1, 1);
+('¿Cual es la etiqueta correcta para crear un parrafo en HTML?', 2, 1, 4),
+('¿Como se seleccionan todos los elementos <h1> en CSS?', 2, 1, 4),
+('¿Cual de estas formas ejecuta código JS cuando se hace clic en un boton HTML?', 2, 1, 4),
+('¿Que atributo se usa para apuntar la fuente de una imagen?', 2, 1, 4),
+('¿Que propiedad CSS controla el espacio exterior entre elementos?', 2, 1, 4),
+('¿Cual es la estructura mínima correcta de un enlace que apunta a https://ejemplo.com?', 2, 1, 4),
+('¿Como se aplica una clase llamada "boton" en CSS?', 2, 1, 4),
+('¿Cual palabra clave crea una variable cuyo valor puede cambiar?', 2, 1, 4),
+('¿Que type se usa para pedir un correo electronico y activar validacion básica del navegador?', 2, 1, 4),
+('¿Cual es la sintaxis correcta para enlazar style.css dentro del head?', 2, 1, 4);
 
 -- =========================
 -- Preguntas Nivel Intermedio (nivel_id = 2)
 -- =========================
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id) VALUES
-('¿Qué selector CSS selecciona un input con el atributo required?', 2, 2, 2),
-('¿Qué propiedad alinea los elementos a lo largo del eje principal en un contenedor flex?', 2, 2, 2),
-('¿Cuál método devuelve el primer elemento que coincide con un selector CSS?', 2, 2, 2),
-('¿Cuál ventaja da usar event delegation?', 2, 2, 2),
-('¿Cómo se guarda la clave "tema" con valor "oscuro" en localStorage?', 2, 2, 2),
-('¿Cuál es la sintaxis básica de una media query que aplica estilos a pantallas de máximo 600px?', 2, 2, 2),
-('¿Cuál es la forma correcta de crear una promesa que resuelve con "ok"?', 2, 2, 2),
-('¿Qué atributo se usa junto con target="_blank" para mejorar seguridad?', 2, 2, 2),
-('¿Qué propiedad define el número y tamaño de columnas en Grid?', 2, 2, 2),
-('¿Qué método añade una clase llamada "activo" a un elemento en JS?', 2, 2, 2);
+('¿Que selector CSS selecciona un input con el atributo required?', 2, 2, 5),
+('¿Que propiedad alinea los elementos a lo largo del eje principal en un contenedor flex?', 2, 2, 5),
+('¿Cual método devuelve el primer elemento que coincide con un selector CSS?', 2, 2, 5),
+('¿Cual ventaja da usar event delegation?', 2, 2, 5),
+('¿Como se guarda la clave "tema" con valor "oscuro" en localStorage?', 2, 2, 5),
+('¿Cual es la sintaxis básica de una media query que aplica estilos a pantallas de maximo 600px?', 2, 2, 5),
+('¿Cual es la forma correcta de crear una promesa que resuelve con "ok"?', 2, 2, 5),
+('¿Que atributo se usa junto con target="_blank" para mejorar seguridad?', 2, 2, 5),
+('¿Que propiedad define el número y tamaño de columnas en Grid?', 2, 2, 5),
+('¿Que método añade una clase llamada "activo" a un elemento en JS?', 2, 2, 5);
 
 -- =========================
 -- Preguntas Nivel Avanzado (nivel_id = 3)
 -- =========================
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id) VALUES
-('¿Cuál de estas acciones es más probable que cause un reflow completo en la página?', 2, 3, 3),
-('¿Cuál técnica asegura que una función se ejecute sólo después de que el usuario dejó de disparar eventos durante un periodo?', 2, 3, 3),
-('¿Qué mecanismo permite que una petición fetch a otro dominio sea aceptada por el navegador?', 2, 3, 3),
-('¿Cuál ventaja ofrece el shadow DOM?', 2, 3, 3),
-('¿Qué se ejecuta antes en la siguiente secuencia: callbacks de setTimeout y then de una Promise resuelta inmediatamente?', 2, 3, 3),
-('¿Qué atributo es importante para indicar el propósito de un botón que solo muestra un icono (sin texto)?', 2, 3, 3),
-('¿Cómo se exporta por defecto una función llamada init desde un módulo?', 2, 3, 3),
-('¿Cuál es la forma correcta de obtener un JSON desde fetch y manejar el resultado con then?', 2, 3, 3),
-('¿Cuál práctica sigue Progressive Enhancement?', 2, 3, 3),
-('¿Qué beneficio directo ofrece HTTP/2 frente a HTTP/1.1 para cargar recursos?', 2, 3, 3);
+('¿Cual de estas acciones es más probable que cause un reflow completo en la página?', 2, 3, 6),
+('¿Cual técnica asegura que una función se ejecute sólo después de que el usuario dejó de disparar eventos durante un periodo?', 2, 3, 6),
+('¿Que mecanismo permite que una petición fetch a otro dominio sea aceptada por el navegador?', 2, 3, 6),
+('¿Cual ventaja ofrece el shadow DOM?', 2, 3, 6),
+('¿Que se ejecuta antes en la siguiente secuencia: callbacks de setTimeout y then de una Promise resuelta inmediatamente?', 2, 3, 6),
+('¿Que atributo es importante para indicar el propósito de un botón que solo muestra un icono (sin texto)?', 2, 3, 6),
+('¿Como se exporta por defecto una función llamada init desde un módulo?', 2, 3, 6),
+('¿Cual es la forma correcta de obtener un JSON desde fetch y manejar el resultado con then?', 2, 3, 6),
+('¿Cual práctica sigue Progressive Enhancement?', 2, 3, 6),
+('¿Que beneficio directo ofrece HTTP/2 frente a HTTP/1.1 para cargar recursos?', 2, 3, 6);
 
 -- Pregunta 61
 INSERT INTO respuestas (pregunta_id, texto, es_correcta) VALUES
