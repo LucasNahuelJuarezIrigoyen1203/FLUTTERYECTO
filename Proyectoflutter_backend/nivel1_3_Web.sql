@@ -4,13 +4,13 @@
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id) VALUES
 ('¿Cual es la etiqueta correcta para crear un parrafo en HTML?', 2, 1, 4),
 ('¿Como se seleccionan todos los elementos <h1> en CSS?', 2, 1, 4),
-('¿Cual de estas formas ejecuta código JS cuando se hace clic en un boton HTML?', 2, 1, 4),
+('¿Cual de estas formas ejecuta codigo JS cuando se hace clic en un boton HTML?', 2, 1, 4),
 ('¿Que atributo se usa para apuntar la fuente de una imagen?', 2, 1, 4),
 ('¿Que propiedad CSS controla el espacio exterior entre elementos?', 2, 1, 4),
-('¿Cual es la estructura mínima correcta de un enlace que apunta a https://ejemplo.com?', 2, 1, 4),
+('¿Cual es la estructura minima correcta de un enlace que apunta a https://ejemplo.com?', 2, 1, 4),
 ('¿Como se aplica una clase llamada "boton" en CSS?', 2, 1, 4),
 ('¿Cual palabra clave crea una variable cuyo valor puede cambiar?', 2, 1, 4),
-('¿Que type se usa para pedir un correo electronico y activar validacion básica del navegador?', 2, 1, 4),
+('¿Que type se usa para pedir un correo electronico y activar validacion basica del navegador?', 2, 1, 4),
 ('¿Cual es la sintaxis correcta para enlazar style.css dentro del head?', 2, 1, 4);
 
 -- =========================
@@ -19,14 +19,14 @@ INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id) VALUES
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id) VALUES
 ('¿Que selector CSS selecciona un input con el atributo required?', 2, 2, 5),
 ('¿Que propiedad alinea los elementos a lo largo del eje principal en un contenedor flex?', 2, 2, 5),
-('¿Cual método devuelve el primer elemento que coincide con un selector CSS?', 2, 2, 5),
+('¿Cual metodo devuelve el primer elemento que coincide con un selector CSS?', 2, 2, 5),
 ('¿Cual ventaja da usar event delegation?', 2, 2, 5),
 ('¿Como se guarda la clave "tema" con valor "oscuro" en localStorage?', 2, 2, 5),
 ('¿Cual es la sintaxis básica de una media query que aplica estilos a pantallas de maximo 600px?', 2, 2, 5),
 ('¿Cual es la forma correcta de crear una promesa que resuelve con "ok"?', 2, 2, 5),
 ('¿Que atributo se usa junto con target="_blank" para mejorar seguridad?', 2, 2, 5),
 ('¿Que propiedad define el número y tamaño de columnas en Grid?', 2, 2, 5),
-('¿Que método añade una clase llamada "activo" a un elemento en JS?', 2, 2, 5);
+('¿Que metodo añade una clase llamada "activo" a un elemento en JS?', 2, 2, 5);
 
 -- =========================
 -- Preguntas Nivel Avanzado (nivel_id = 3)

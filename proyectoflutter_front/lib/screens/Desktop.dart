@@ -36,7 +36,7 @@ class Tema3Page extends StatelessWidget {
                       progreso: 0.0,
                     ),
                   ],
-                  mascotaActiva: null, // ✅ agregado para evitar error
+                  mascotaActiva: null,
                 ),
               ),
         builder: (context, estadoSnapshot) {
@@ -94,28 +94,24 @@ class Tema3Page extends StatelessWidget {
                     child: ListView(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       children: niveles.map((nivel) {
-                        final desbloqueado = nivel.id <= rama.nivelActual;
+                        // 🔓 Fuerza todos los niveles como desbloqueados
                         return NivelCard(
                           nivel: nivel.nombre,
-                          icon: desbloqueado
-                              ? Icons.play_circle_fill
-                              : Icons.lock,
-                          color: desbloqueado ? Colors.green : Colors.grey,
-                          stars: desbloqueado ? 3 : 0,
-                          locked: !desbloqueado,
+                          icon: Icons.play_circle_fill,
+                          color: Colors.green,
+                          stars: 3,
+                          locked: false,
                           onTap: () {
-                            if (desbloqueado) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PantallaNivel(
-                                    nivelId: nivel.id,
-                                    usuarioEstado: estado,
-                                    ramaNombre: rama.ramaNombre,
-                                  ),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PantallaNivel(
+                                  nivelId: nivel.id,
+                                  usuarioEstado: estado,
+                                  ramaNombre: rama.ramaNombre,
                                 ),
-                              );
-                            }
+                              ),
+                            );
                           },
                         );
                       }).toList(),
@@ -189,13 +185,8 @@ class NivelCard extends StatelessWidget {
             (index) => const Icon(Icons.star, size: 20, color: Colors.black87),
           ),
         ),
-        trailing: locked
-            ? const Icon(
-                Icons.lock_outline,
-                color: Color.fromARGB(255, 175, 175, 175),
-              )
-            : const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: locked ? null : onTap,
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: onTap,
       ),
     );
   }
