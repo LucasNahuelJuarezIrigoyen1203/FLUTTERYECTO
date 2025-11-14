@@ -1,8 +1,8 @@
 INSERT INTO ramas (nombre)
 VALUES 
   ('Aplicaciones Moviles'),
-  ('Redes'),
-  ('Destock');
+  ('Web'),
+  ('Desktop');
 
 
 INSERT INTO dificultades (nombre, multiplicador)
