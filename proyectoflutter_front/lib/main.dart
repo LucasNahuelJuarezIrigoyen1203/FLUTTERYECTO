@@ -17,7 +17,7 @@ class LoginApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mi App Flutter',
+      title: 'Khroma',
       debugShowCheckedModeBanner: false,
       // 🚪 Siempre arranca en login
       initialRoute: '/login',
