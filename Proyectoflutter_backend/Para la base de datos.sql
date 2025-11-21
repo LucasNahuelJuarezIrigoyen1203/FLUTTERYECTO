@@ -183,6 +183,7 @@ CREATE TABLE explicacion (
     rama_id INT NOT NULL,
     created_at DATETIME DEFAULT GETDATE(),
     updated_at DATETIME,
+    nivel_id INT NOT NULL,
 
     CONSTRAINT FK_Explicacion_Pregunta FOREIGN KEY (pregunta_id)
         REFERENCES preguntas(id)
@@ -190,10 +191,13 @@ CREATE TABLE explicacion (
 
     CONSTRAINT FK_Explicacion_Rama FOREIGN KEY (rama_id)
         REFERENCES ramas(id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
+
+    CONSTRAINT FK_Explicacion_Nivel FOREIGN KEY (nivel_id)
+    REFERENCES niveles(id)
+    ON DELETE CASCADE    
+
 );
-
-
 -- Índices para rendimiento
 CREATE INDEX idx_usuario_correo ON usuarios(correo);
 CREATE INDEX idx_pregunta_rama ON preguntas(rama_id);

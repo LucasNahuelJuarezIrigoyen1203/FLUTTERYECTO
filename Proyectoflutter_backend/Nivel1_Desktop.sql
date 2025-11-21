@@ -9,7 +9,8 @@ VALUES
     ('¿Que control permite al usuario marcar una opción como activada o desactivada (Sí/No, On/Off)?', 3, 1, 7),
     ('¿Que tipo de evento se dispara cuando el usuario hace clic en un boton?', 3, 1, 7),
     ('¿Cual de estos controles se usa para mostrar texto estático que no puede ser modificado por el usuario?', 3, 1, 7),
-    ('¿Que elemento se usa para ofrecer una navegación jerárquica con comandos en la parte superior de la ventana?', 3, 1, 7); -- Pregunta 31
+    ('¿Que elemento se usa para ofrecer una navegación jerárquica con comandos en la parte superior de la ventana?', 3, 1, 7); 
+-- Pregunta 31
 INSERT INTO respuestas (pregunta_id, texto, es_correcta) VALUES
 (31, 'TextBox', 1),
 (31, 'Label', 0 ),
