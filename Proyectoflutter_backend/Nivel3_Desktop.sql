@@ -1,15 +1,15 @@
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id)
 VALUES 
-('¿Cuál es el objetivo principal del patrón de diseño **MVVM** (Model-View-ViewModel) en el desarrollo de escritorio?', 3, 3, 8),
-('¿Qué técnica es fundamental para actualizar un elemento de la UI desde un hilo de trabajo (background thread)?', 3, 3, 8),
+('¿Cual es el objetivo principal del patrón de diseño **MVVM** (Model-View-ViewModel) en el desarrollo de escritorio?', 3, 3, 8),
+('¿Que técnica es fundamental para actualizar un elemento de la UI desde un hilo de trabajo (background thread)?', 3, 3, 8),
 ('En aplicaciones basadas en eventos, ¿qué es un **"Event Aggregator"** o **"Mediator"**?', 3, 3, 8),
-('¿Cuál es la principal ventaja de utilizar la inyección de dependencias (DI) en el desarrollo de aplicaciones de escritorio?', 3, 3, 8),
-('¿Qué diferencia a un **"Control de Usuario"** de un **"Control Estándar"**?', 3, 3, 8),
-('¿Qué es el **"Marshalling"** en el contexto de la comunicación entre hilos en una UI?', 3, 3, 8),
-('¿Cuál es un desafío común al desplegar una aplicación de escritorio que una aplicación web no suele enfrentar?', 3, 3, 8),
-('¿Qué es la **"Virtualización de UI"** en un control de lista (como DataGrid)?', 3, 3, 8),
-('¿Qué patrón se usa para manejar la navegación entre múltiples vistas sin acoplamiento fuerte en arquitecturas desacopladas?', 3, 3, 8),
-('¿Qué es un **"Sideloading"** en el contexto de instalación y despliegue de aplicaciones de escritorio?', 3, 3, 8);
+('¿Cual es la principal ventaja de utilizar la inyección de dependencias (DI) en el desarrollo de aplicaciones de escritorio?', 3, 3, 8),
+('¿Que diferencia a un **"Control de Usuario"** de un **"Control Estándar"**?', 3, 3, 8),
+('¿Que es el **"Marshalling"** en el contexto de la comunicación entre hilos en una UI?', 3, 3, 8),
+('¿Cual es un desafío común al desplegar una aplicación de escritorio que una aplicación web no suele enfrentar?', 3, 3, 8),
+('¿Que es la **"Virtualización de UI"** en un control de lista (como DataGrid)?', 3, 3, 8),
+('¿Que patrón se usa para manejar la navegación entre múltiples vistas sin acoplamiento fuerte en arquitecturas desacopladas?', 3, 3, 8),
+('¿Que es un **"Sideloading"** en el contexto de instalación y despliegue de aplicaciones de escritorio?', 3, 3, 8);
 
 -- Pregunta 51
 INSERT INTO respuestas (pregunta_id, texto, es_correcta) VALUES

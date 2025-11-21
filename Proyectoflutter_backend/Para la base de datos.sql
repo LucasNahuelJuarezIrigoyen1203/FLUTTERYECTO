@@ -4,6 +4,16 @@ GO
 USE Proyectoflutter;
 GO
 
+-- Catálogo de mascotas
+CREATE TABLE mascotas (
+    id INT PRIMARY KEY IDENTITY,
+    nombre NVARCHAR(100) NOT NULL,
+    descripcion NVARCHAR(500),
+    activo BIT DEFAULT 1,
+    created_at DATETIME DEFAULT GETDATE()
+    imagen NVARCHAR(255);
+);
+
 -- Tabla de usuarios
 CREATE TABLE usuarios (
     id INT PRIMARY KEY IDENTITY,
@@ -61,15 +71,7 @@ CREATE TABLE respuestas (
     es_correcta BIT NOT NULL
 );
 
--- Catálogo de mascotas
-CREATE TABLE mascotas (
-    id INT PRIMARY KEY IDENTITY,
-    nombre NVARCHAR(100) NOT NULL,
-    descripcion NVARCHAR(500),
-    activo BIT DEFAULT 1,
-    created_at DATETIME DEFAULT GETDATE()
-    imagen NVARCHAR(255);
-);
+
 
 -- Condiciones de desbloqueo de mascotas
 CREATE TABLE desbloqueos_mascotas (

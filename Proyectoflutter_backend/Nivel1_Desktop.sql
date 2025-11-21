@@ -1,15 +1,15 @@
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id)
 VALUES 
-    ('¿Qué elemento de UI se usa para permitir que el usuario escriba una sola línea de texto?', 3, 1, 7),
-    ('¿Cómo se llama la ventana principal o contenedor de la aplicación de escritorio?', 3, 1, 7),
-    ('¿Qué control permite al usuario seleccionar una o varias opciones de una lista desplegable?', 3, 1, 7),
-    ('¿Qué control se utiliza para agrupar visualmente controles relacionados y aplicarles un título?', 3, 1, 7),
-    ('¿Cuál es el componente de UI que activa una acción al hacer clic sobre él?', 3, 1, 7),
-    ('¿Qué control muestra una imagen estática o un logo dentro de la aplicación?', 3, 1, 7),
-    ('¿Qué control permite al usuario marcar una opción como activada o desactivada (Sí/No, On/Off)?', 3, 1, 7),
-    ('¿Qué tipo de evento se dispara cuando el usuario hace clic en un botón?', 3, 1, 7),
-    ('¿Cuál de estos controles se usa para mostrar texto estático que no puede ser modificado por el usuario?', 3, 1, 7),
-    ('¿Qué elemento se usa para ofrecer una navegación jerárquica con comandos en la parte superior de la ventana?', 3, 1, 7); -- Pregunta 31
+    ('¿Que elemento de UI se usa para permitir que el usuario escriba una sola línea de texto?', 3, 1, 7),
+    ('¿Como se llama la ventana principal o contenedor de la aplicacion de escritorio?', 3, 1, 7),
+    ('¿Que control permite al usuario seleccionar una o varias opciones de una lista desplegable?', 3, 1, 7),
+    ('¿Que control se utiliza para agrupar visualmente controles relacionados y aplicarles un título?', 3, 1, 7),
+    ('¿Cual es el componente de UI que activa una acción al hacer clic sobre él?', 3, 1, 7),
+    ('¿Que control muestra una imagen estática o un logo dentro de la aplicacion?', 3, 1, 7),
+    ('¿Que control permite al usuario marcar una opción como activada o desactivada (Sí/No, On/Off)?', 3, 1, 7),
+    ('¿Que tipo de evento se dispara cuando el usuario hace clic en un boton?', 3, 1, 7),
+    ('¿Cual de estos controles se usa para mostrar texto estático que no puede ser modificado por el usuario?', 3, 1, 7),
+    ('¿Que elemento se usa para ofrecer una navegación jerárquica con comandos en la parte superior de la ventana?', 3, 1, 7); -- Pregunta 31
 INSERT INTO respuestas (pregunta_id, texto, es_correcta) VALUES
 (31, 'TextBox', 1),
 (31, 'Label', 0 ),

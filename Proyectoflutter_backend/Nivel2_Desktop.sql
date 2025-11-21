@@ -1,15 +1,15 @@
 INSERT INTO preguntas (texto, rama_id, dificultad_id, nivel_id)
 VALUES 
-('¿Qué patrón de diseño separa la lógica de negocio de la interfaz de usuario para mejorar la mantenibilidad?', 3, 2, 8),
-('¿Cuál es el término para la técnica de diseño que asegura que la UI se adapte a diferentes tamaños de ventana?', 3, 2, 8),
-('¿Cómo se llama el proceso de enviar datos desde la UI a una capa de lógica de negocio o modelo?', 3, 2, 8),
-('¿Qué mecanismo se usa típicamente para evitar que una aplicación de escritorio se "congele" al realizar una operación larga?', 3, 2, 8),
-('¿Qué tipo de control es ideal para mostrar datos tabulares grandes con capacidades de ordenación y filtrado?', 3, 2, 8),
-('¿Qué concepto se aplica para configurar un control para que un cambio en los datos se refleje automáticamente en la UI?', 3, 2, 8),
-('¿Qué tipo de diálogo se usa para notificar al usuario sobre un error crítico que requiere su atención inmediata?', 3, 2, 8),
-('¿Qué significa el término "Thread de UI" o "Hilo de interfaz de usuario"?', 3, 2, 8),
-('¿Qué componente de UI se utiliza a menudo para mostrar un progreso indeterminado de una operación en segundo plano?', 3, 2, 8);
-('¿Cuál de estas es una limitación principal de una aplicación de escritorio en comparación con una web?', 3, 2, 8),
+('¿Que patrón de diseño separa la lógica de negocio de la interfaz de usuario para mejorar la mantenibilidad?', 3, 2, 8),
+('¿Cual es el término para la técnica de diseño que asegura que la UI se adapte a diferentes tamaños de ventana?', 3, 2, 8),
+('¿Como se llama el proceso de enviar datos desde la UI a una capa de lógica de negocio o modelo?', 3, 2, 8),
+('¿Que mecanismo se usa típicamente para evitar que una aplicación de escritorio se "congele" al realizar una operación larga?', 3, 2, 8),
+('¿Que tipo de control es ideal para mostrar datos tabulares grandes con capacidades de ordenación y filtrado?', 3, 2, 8),
+('¿Que concepto se aplica para configurar un control para que un cambio en los datos se refleje automáticamente en la UI?', 3, 2, 8),
+('¿Que tipo de diálogo se usa para notificar al usuario sobre un error crítico que requiere su atención inmediata?', 3, 2, 8),
+('¿Que significa el término "Thread de UI" o "Hilo de interfaz de usuario"?', 3, 2, 8),
+('¿Que componente de UI se utiliza a menudo para mostrar un progreso indeterminado de una operación en segundo plano?', 3, 2, 8);
+('¿Cual de estas es una limitación principal de una aplicación de escritorio en comparación con una web?', 3, 2, 8),
 
 -- Pregunta 41
 INSERT INTO respuestas (pregunta_id, texto, es_correcta) VALUES

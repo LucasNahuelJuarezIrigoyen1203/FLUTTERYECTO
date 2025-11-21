@@ -58,8 +58,8 @@ INSERT INTO respuestas (pregunta_id, texto, es_correcta) VALUES
 INSERT INTO respuestas (pregunta_id, texto, es_correcta) VALUES
 (2, 'Funciones que controlan la red', 0),
 (2, 'Bloques básicos de la interfaz', 1),
-(2, 'Librerías externas', 0),
-(2, 'Archivos de configuración', 0);
+(2, 'Libreriaas externas', 0),
+(2, 'Archivos de configuracon', 0);
 
 -- Pregunta 3
 INSERT INTO respuestas (pregunta_id, texto, es_correcta) VALUES
