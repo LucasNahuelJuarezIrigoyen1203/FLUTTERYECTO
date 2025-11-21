@@ -176,6 +176,24 @@ CREATE TABLE usuario_estado (
   FOREIGN KEY (rama_id) REFERENCES ramas(id)
 );
 
+CREATE TABLE explicacion (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    texto NVARCHAR(MAX) NOT NULL,
+    pregunta_id INT NOT NULL,
+    rama_id INT NOT NULL,
+    created_at DATETIME DEFAULT GETDATE(),
+    updated_at DATETIME,
+
+    CONSTRAINT FK_Explicacion_Pregunta FOREIGN KEY (pregunta_id)
+        REFERENCES preguntas(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT FK_Explicacion_Rama FOREIGN KEY (rama_id)
+        REFERENCES ramas(id)
+        ON DELETE CASCADE
+);
+
+
 -- Índices para rendimiento
 CREATE INDEX idx_usuario_correo ON usuarios(correo);
 CREATE INDEX idx_pregunta_rama ON preguntas(rama_id);
